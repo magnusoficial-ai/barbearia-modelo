@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  BARBEARIA MODELO · landing page de demonstração
+  (negócio fictício, feito para portfólio)
+
+  Tudo fica neste arquivo: o HTML (o conteúdo) e o CSS (o visual,
+  dentro da tag <style>). Não precisa instalar nada.
+
+  PARA USAR COM UM CLIENTE REAL, procure os comentários "TROQUE AQUI":
+    1. Número do WhatsApp: 5586999999999 aparece em 3 links.
+       Use Ctrl+H (Localizar e substituir) para trocar todos de uma vez.
+       No rodapé também tem o número escrito: (86) 99999-9999.
+    2. Endereço e mapa.
+    3. Nome, preços, horários e link do Instagram
+       (e apague o aviso de "site de demonstração" no rodapé).
+  ================================================================
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Título da aba e descrição: aparecem no Google e na prévia do link no WhatsApp -->
+  <title>Barbearia Modelo | Corte e barba em Teresina-PI</title>
+  <meta name="description" content="Corte, barba e combo com hora marcada no Centro de Teresina-PI. Agende pelo WhatsApp.">
+  <meta property="og:title" content="Barbearia Modelo | Corte e barba em Teresina-PI">
+  <meta property="og:description" content="Corte, barba e combo com hora marcada. Agende pelo WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="theme-color" content="#0e0e10">
+
+  <!-- Ícone da aba do navegador: o emoji 💈 (não precisa de arquivo de imagem) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E">
+
+  <style>
+    /* ==========================================================
+       CORES E MEDIDAS
+       Troque uma cor aqui e ela muda na página inteira.
+       ========================================================== */
+    :root {
+      --fundo: #0e0e10;          /* preto da página */
+      --fundo-claro: #16161a;    /* preto um pouco mais claro (seção do meio) */
+      --cartao: #1c1c21;         /* fundo dos cartões */
+      --borda: #2d2d34;          /* linhas e bordas */
+      --texto: #f4f4f2;          /* texto principal */
+      --texto-suave: #b8b8b2;    /* texto secundário */
+      --dourado: #d4af37;        /* o detalhe dourado */
+      --dourado-claro: #e9c95f;  /* dourado ao passar o mouse */
+      --verde-whatsapp: #25d366;
+      --raio: 16px;              /* arredondamento dos cantos */
+    }
+
+    /* ==========================================================
+       BASE (vale para a página toda)
+       ========================================================== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fundo);
+      color: var(--texto);
+      /* Fonte do próprio celular/computador: carrega na hora e é bem legível */
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Contorno visível para quem navega pelo teclado */
+    a:focus-visible {
+      outline: 3px solid var(--dourado-claro);
+      outline-offset: 3px;
+    }
+
+    /* Limita a largura do conteúdo e dá respiro nas laterais */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Esconde a "caixinha" onde os ícones são desenhados */
+    .sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .icone {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Texto pequeno dourado que aparece acima dos títulos */
+    .selo {
+      margin-bottom: 10px;
+      color: var(--dourado);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================
+       BOTÕES
+       ========================================================== */
+    .botao {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 12px 26px;
+      border: 2px solid var(--dourado);
+      border-radius: 999px;
+      background: var(--dourado);
+      color: #111;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .botao:hover {
+      border-color: var(--dourado-claro);
+      background: var(--dourado-claro);
+      transform: translateY(-2px);
+    }
+
+    /* Botão principal do topo: grande e fácil de tocar no celular */
+    .botao--grande {
+      display: flex;
+      width: 100%;
+      max-width: 380px;
+      min-height: 62px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      font-size: clamp(1.05rem, 4.8vw, 1.15rem); /* diminui um pouco em telas bem estreitas */
+      box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25);
+    }
+
+    /* Botão só com contorno (usado no "Abrir no Google Maps") */
+    .botao--contorno {
+      background: transparent;
+      color: var(--dourado);
+    }
+
+    .botao--contorno:hover {
+      color: #111;
+    }
+
+    /* ==========================================================
+       1. TOPO
+       ========================================================== */
+    .topo {
+      display: flex;
+      align-items: center;
+      min-height: 80vh;
+      min-height: 80svh; /* quase a tela toda, deixando aparecer que a página continua */
+      padding: 64px 0;
+      text-align: center;
+      background:
+        radial-gradient(120% 60% at 50% 0%, rgba(212, 175, 55, 0.2), transparent 70%),
+        var(--fundo);
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .topo .container {
+      width: 100%;
+    }
+
+    /* Poste de barbeiro feito só com CSS (as listras "sobem" devagar) */
+    .poste {
+      width: 24px;
+      height: 68px;
+      margin: 0 auto 24px;
+      border: 2px solid var(--dourado);
+      border-radius: 999px;
+      background-image: linear-gradient(45deg,
+        var(--dourado) 0 16.66%, var(--texto) 0 33.33%, var(--fundo) 0 50%,
+        var(--dourado) 0 66.66%, var(--texto) 0 83.33%, var(--fundo) 0);
+      background-size: 24px 24px;
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
+      animation: listras 3s linear infinite;
+    }
+
+    @keyframes listras {
+      to {
+        background-position: 0 -24px;
+      }
+    }
+
+    /* Risquinhos dourados dos dois lados do "Centro · Teresina-PI" */
+    .topo .selo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topo .selo::before,
+    .topo .selo::after {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: var(--dourado);
+    }
+
+    .topo h1 {
+      font-size: clamp(2.75rem, 13vw, 5.5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .topo h1 span {
+      display: block;
+      color: var(--dourado);
+    }
+
+    .topo__frase {
+      max-width: 30ch;
+      margin: 20px auto 32px;
+      color: var(--texto-suave);
+      font-size: 1.15rem;
+    }
+
+    .topo__link {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 8px 4px;
+      color: var(--texto-suave);
+      text-decoration: none;
+    }
+
+    .topo__link:hover {
+      color: var(--dourado);
+    }
+
+    /* ==========================================================
+       SEÇÕES (estrutura que se repete nas partes 2, 3 e 4)
+       ========================================================== */
+    .secao {
+      padding: 72px 0;
+    }
+
+    .secao--alternada {
+      background: var(--fundo-claro);
+      border-top: 1px solid var(--borda);
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .secao__cabecalho {
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .secao__cabecalho h2 {
+      font-size: clamp(1.75rem, 7vw, 2.5rem);
+      font-weight: 800;
+    }
+
+    /* Risquinho dourado embaixo dos títulos */
+    .secao__cabecalho h2::after {
+      content: "";
+      display: block;
+      width: 56px;
+      height: 3px;
+      margin: 16px auto 0;
+      border-radius: 3px;
+      background: var(--dourado);
+    }
+
+    .cartao {
+      padding: 22px;
+      background: var(--cartao);
+      border: 1px solid var(--borda);
+      border-radius: var(--raio);
+    }
+
+    .cartao h3 {
+      font-size: 1.2rem;
+    }
+
+    /* Círculo dourado com um emoji dentro */
+    .emoji {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.1);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    /* ==========================================================
+       2. SERVIÇOS E PREÇOS
+       ========================================================== */
+    .lista-servicos {
+      display: grid;
+      gap: 18px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Cada serviço: emoji, nome e preço na linha de cima; descrição embaixo */
+    .servico {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px 14px;
+    }
+
+    .servico h3 small {
+      display: block;
+      color: var(--texto-suave);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .preco {
+      color: var(--dourado);
+      font-size: 1.6rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .preco small {
+      font-size: 0.6em;
+    }
+
+    .servico__descricao {
+      grid-column: 1 / -1;
+      color: var(--texto-suave);
+      font-size: 0.95rem;
+    }
+
+    /* Cartão do combo, com borda dourada */
+    .servico--destaque {
+      border-color: var(--dourado);
+      background: linear-gradient(160deg, rgba(212, 175, 55, 0.14), var(--cartao) 55%);
+    }
+
+    .etiqueta {
+      position: absolute;
+      top: -12px;
+      right: 18px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: var(--dourado);
+      color: #111;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================
+       3. POR QUE ESCOLHER A GENTE
+       ========================================================== */
+    .grade {
+      display: grid;
+      gap: 18px;
+    }
+
+    /* No celular: emoji à esquerda, texto à direita */
+    .diferencial {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-content: start;
+      gap: 6px 16px;
+    }
+
+    .diferencial .emoji {
+      grid-row: span 2;
+    }
+
+    .diferencial p {
+      color: var(--texto-suave);
+    }
+
+    /* ==========================================================
+       4. HORÁRIO E ENDEREÇO
+       ========================================================== */
+    .local,
+    .local__info {
+      display: grid;
+      gap: 18px;
+    }
+
+    .local h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .horarios {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .horarios li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--borda);
+    }
+
+    .horarios li:last-child {
+      border-bottom: 0;
+    }
+
+    .horarios span {
+      color: var(--texto-suave);
+    }
+
+    .horarios strong {
+      white-space: nowrap;
+    }
+
+    address {
+      font-size: 1.05rem;
+      font-style: normal;
+    }
+
+    .referencia {
+      margin: 6px 0 20px;
+      color: var(--texto-suave);
+      font-size: 0.95rem;
+    }
+
+    .mapa {
+      display: block;
+      width: 100%;
+      height: 320px;
+      border: 1px solid var(--borda);
+      border-radius: var(--raio);
+      background: var(--cartao);
+    }
+
+    /* ==========================================================
+       5. RODAPÉ
+       ========================================================== */
+    .rodape {
+      padding: 56px 0 110px; /* espaço extra embaixo para o botão flutuante não cobrir o texto */
+      background: #09090b;
+      border-top: 1px solid var(--borda);
+      text-align: center;
+    }
+
+    .rodape__marca {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .rodape__marca span {
+      color: var(--dourado);
+    }
+
+    .rodape__frase {
+      margin-top: 6px;
+      color: var(--texto-suave);
+    }
+
+    .rodape__links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .rodape__links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 10px 20px;
+      border: 1px solid var(--borda);
+      border-radius: 999px;
+      background: var(--cartao);
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .rodape__links a:hover {
+      border-color: var(--dourado);
+      color: var(--dourado);
+    }
+
+    .rodape__links .icone {
+      color: var(--dourado);
+    }
+
+    .rodape__aviso {
+      color: #8a8a85;
+      font-size: 0.85rem;
+    }
+
+    /* ==========================================================
+       BOTÃO FLUTUANTE DO WHATSAPP (fica fixo no canto da tela)
+       ========================================================== */
+    .whatsapp-flutuante {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--verde-whatsapp);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      transition: transform 0.15s ease;
+    }
+
+    .whatsapp-flutuante:hover {
+      transform: scale(1.08);
+    }
+
+    .whatsapp-flutuante .icone {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* ==========================================================
+       TELAS MAIORES (tablet e computador, a partir de 768px)
+       Todo o CSS acima foi pensado primeiro para o celular;
+       aqui só ajustamos o que muda quando sobra espaço.
+       ========================================================== */
+    @media (min-width: 768px) {
+      .secao {
+        padding: 96px 0;
+      }
+
+      .grade {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+
+      /* No computador: emoji em cima, texto embaixo */
+      .diferencial {
+        grid-template-columns: 1fr;
+      }
+
+      .diferencial .emoji {
+        grid-row: auto;
+        margin-bottom: 8px;
+      }
+
+      /* Horário e endereço à esquerda, mapa à direita */
+      .local {
+        grid-template-columns: 1fr 1.3fr;
+      }
+
+      .local__info {
+        align-content: start;
+      }
+
+      .mapa {
+        height: 100%;
+        min-height: 420px;
+      }
+
+      .whatsapp-flutuante {
+        right: 28px;
+        bottom: 28px;
+      }
+    }
+
+    /* Para quem configurou o aparelho para reduzir animações */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .poste {
+        animation: none;
+      }
+
+      .botao,
+      .whatsapp-flutuante {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ícones do WhatsApp e do Instagram: desenhados uma vez aqui e reutilizados com <use> -->
+  <svg class="sprite" aria-hidden="true">
+    <symbol id="icone-whatsapp" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </symbol>
+    <symbol id="icone-instagram" viewBox="0 0 24 24">
+      <rect x="2" y="2" width="20" height="20" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- ====================== 1. TOPO ====================== -->
+  <header class="topo">
+    <div class="container">
+      <div class="poste" aria-hidden="true"></div>
+      <p class="selo">Centro · Teresina-PI</p>
+      <h1>Barbearia <span>Modelo</span></h1>
+      <p class="topo__frase">Corte e barba no horário que você marcar, sem fila e sem complicação.</p>
+
+      <!--
+        TROQUE AQUI · WhatsApp (1 de 3)
+        5586999999999 = 55 (Brasil) + 86 (DDD) + número. Só números: sem +, espaço ou traço.
+        Depois de "?text=" vem a mensagem pronta "Olá! Quero agendar um horário."
+        escrita em formato de link (%20 = espaço, %C3%A1 = á, %21 = !).
+      -->
+      <a class="botao botao--grande" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+        <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
+        Agendar pelo WhatsApp
+      </a>
+
+      <a class="topo__link" href="#servicos">Ver serviços e preços <span aria-hidden="true">↓</span></a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ====================== 2. SERVIÇOS E PREÇOS ====================== -->
+    <section class="secao" id="servicos" aria-labelledby="titulo-servicos">
+      <div class="container">
+        <div class="secao__cabecalho">
+          <p class="selo">O que fazemos</p>
+          <h2 id="titulo-servicos">Serviços e preços</h2>
+        </div>
+
+        <!-- TROQUE AQUI: os preços são de exemplo. Se mudar, ajuste também a etiqueta "Economize" do combo. -->
+        <div class="lista-servicos">
+          <article class="cartao servico">
+            <span class="emoji" aria-hidden="true">✂️</span>
+            <h3>Corte</h3>
+            <p class="preco"><small>R$</small> 40</p>
+            <p class="servico__descricao">Máquina ou tesoura, do social ao degradê, com acabamento na navalha.</p>
+          </article>
+
+          <article class="cartao servico">
+            <span class="emoji" aria-hidden="true">🧔</span>
+            <h3>Barba</h3>
+            <p class="preco"><small>R$</small> 30</p>
+            <p class="servico__descricao">Modelagem na navalha, toalha quente e finalização com balm.</p>
+          </article>
+
+          <article class="cartao servico servico--destaque">
+            <span class="etiqueta">Economize R$ 10</span>
+            <span class="emoji" aria-hidden="true">💈</span>
+            <h3>Combo <small>Corte + barba</small></h3>
+            <p class="preco"><small>R$</small> 60</p>
+            <p class="servico__descricao">O pacote completo para sair renovado, pagando menos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 3. POR QUE ESCOLHER A GENTE ====================== -->
+    <section class="secao secao--alternada" id="diferenciais" aria-labelledby="titulo-diferenciais">
+      <div class="container">
+        <div class="secao__cabecalho">
+          <p class="selo">Diferenciais</p>
+          <h2 id="titulo-diferenciais">Por que escolher a gente</h2>
+        </div>
+
+        <div class="grade">
+          <article class="cartao diferencial">
+            <span class="emoji" aria-hidden="true">⏰</span>
+            <h3>Hora marcada, sem fila</h3>
+            <p>Você agenda pelo WhatsApp e é atendido no horário combinado.</p>
+          </article>
+
+          <article class="cartao diferencial">
+            <span class="emoji" aria-hidden="true">💬</span>
+            <h3>Do jeito que você quer</h3>
+            <p>Antes de começar, a gente conversa para entender o estilo que combina com você.</p>
+          </article>
+
+          <article class="cartao diferencial">
+            <span class="emoji" aria-hidden="true">❄️</span>
+            <h3>Ambiente climatizado</h3>
+            <p>Ar-condicionado e um cafezinho para você relaxar. Afinal, aqui é Teresina.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 4. HORÁRIO E ENDEREÇO ====================== -->
+    <section class="secao" id="local" aria-labelledby="titulo-local">
+      <div class="container">
+        <div class="secao__cabecalho">
+          <p class="selo">Visite a gente</p>
+          <h2 id="titulo-local">Horário e endereço</h2>
+        </div>
+
+        <div class="local">
+          <div class="local__info">
+            <!-- TROQUE AQUI: horários de exemplo -->
+            <div class="cartao">
+              <h3><span aria-hidden="true">🕒</span> Horário de funcionamento</h3>
+              <ul class="horarios">
+                <li><span>Segunda a sexta</span> <strong>9h às 19h</strong></li>
+                <li><span>Sábado</span> <strong>8h às 16h</strong></li>
+                <li><span>Domingo</span> <strong>Fechado</strong></li>
+              </ul>
+            </div>
+
+            <!-- TROQUE AQUI: endereço genérico de exemplo -->
+            <div class="cartao">
+              <h3><span aria-hidden="true">📍</span> Endereço</h3>
+              <address>
+                Rua Exemplo, 123 – Centro<br>
+                Teresina – PI
+              </address>
+              <p class="referencia">Ponto de referência: [TEXTO DE EXEMPLO]</p>
+              <!-- TROQUE AQUI: depois de "query=" vai o endereço do cliente (use + no lugar dos espaços) -->
+              <a class="botao botao--contorno" href="https://www.google.com/maps/search/?api=1&query=Centro,+Teresina+-+PI" target="_blank" rel="noopener">Abrir no Google Maps</a>
+            </div>
+          </div>
+
+          <!--
+            TROQUE AQUI · Mapa
+            Jeito mais fácil: troque o texto depois de "q=" pelo endereço do cliente (use + no lugar dos espaços).
+            Outro jeito: no Google Maps, busque o endereço > Compartilhar > Incorporar um mapa,
+            copie o link que está dentro de src="..." e cole no lugar do link abaixo.
+          -->
+          <iframe class="mapa"
+            title="Mapa do Centro de Teresina-PI"
+            src="https://maps.google.com/maps?q=Centro,+Teresina+-+PI&hl=pt-BR&z=15&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================== 5. RODAPÉ ====================== -->
+  <footer class="rodape">
+    <div class="container">
+      <p class="rodape__marca">Barbearia <span>Modelo</span></p>
+      <p class="rodape__frase">Corte e barba com hora marcada no Centro de Teresina-PI.</p>
+
+      <nav class="rodape__links" aria-label="Redes sociais e contato">
+        <!-- TROQUE AQUI: link do Instagram do cliente, ex.: https://www.instagram.com/nomedoperfil/ -->
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+          <svg class="icone" aria-hidden="true"><use href="#icone-instagram"></use></svg>
+          Instagram
+        </a>
+
+        <!-- TROQUE AQUI · WhatsApp (2 de 3): o número do link e o número escrito -->
+        <a href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+          <svg class="icone" role="img" aria-label="WhatsApp"><use href="#icone-whatsapp"></use></svg>
+          (86) 99999-9999
+        </a>
+      </nav>
+
+      <!-- Para um cliente real, apague a parte "Site de demonstração..." -->
+      <p class="rodape__aviso">© 2026 Barbearia Modelo · Site de demonstração: esta barbearia é fictícia.</p>
+    </div>
+
+    <!--
+      BOTÃO FLUTUANTE DO WHATSAPP
+      No código ele fica aqui dentro do rodapé, mas o CSS (position: fixed)
+      deixa ele parado no canto da tela o tempo todo.
+      TROQUE AQUI · WhatsApp (3 de 3)
+    -->
+    <a class="whatsapp-flutuante" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp">
+      <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
+    </a>
+  </footer>
+
+</body>
+</html>
