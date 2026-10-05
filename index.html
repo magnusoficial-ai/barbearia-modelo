@@ -4,14 +4,16 @@
   BARBEARIA MODELO · landing page de demonstração
   (negócio fictício, feito para portfólio)
 
-  Tudo fica neste arquivo: o HTML (o conteúdo) e o CSS (o visual,
-  dentro da tag <style>). Não precisa instalar nada.
+  Tudo fica neste arquivo: o HTML (o conteúdo), o CSS (o visual,
+  dentro da tag <style>) e um pouquinho de JavaScript no final
+  (só para mostrar "Aberto agora" ou "Fechado agora").
+  Não precisa instalar nada.
 
   PARA USAR COM UM CLIENTE REAL, procure os comentários "TROQUE AQUI":
     1. Número do WhatsApp: 5586999999999 aparece em 3 links.
        Use Ctrl+H (Localizar e substituir) para trocar todos de uma vez.
        No rodapé também tem o número escrito: (86) 99999-9999.
-    2. Endereço e mapa.
+    2. Endereço e mapa (o endereço aparece no topo e na seção "Onde fica").
     3. Nome, preços, horários e link do Instagram
        (e apague o aviso de "site de demonstração" no rodapé).
   ================================================================
@@ -28,10 +30,20 @@
   <meta property="og:description" content="Corte, barba e combo com hora marcada. Agende pelo WhatsApp.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
-  <meta name="theme-color" content="#0e0e10">
+  <meta name="theme-color" content="#f2ece2">
 
   <!-- Ícone da aba do navegador: o emoji 💈 (não precisa de arquivo de imagem) -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E">
+
+  <!--
+    Fontes do Google:
+    Fraunces nos títulos (serifada, com cara de letreiro antigo)
+    e Instrument Sans no texto corrido. Se a internet falhar,
+    o navegador usa uma fonte parecida do próprio aparelho.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Instrument+Sans:wght@400;500;600&display=swap">
 
   <style>
     /* ==========================================================
@@ -39,16 +51,22 @@
        Troque uma cor aqui e ela muda na página inteira.
        ========================================================== */
     :root {
-      --fundo: #0e0e10;          /* preto da página */
-      --fundo-claro: #16161a;    /* preto um pouco mais claro (seção do meio) */
-      --cartao: #1c1c21;         /* fundo dos cartões */
-      --borda: #2d2d34;          /* linhas e bordas */
-      --texto: #f4f4f2;          /* texto principal */
-      --texto-suave: #b8b8b2;    /* texto secundário */
-      --dourado: #d4af37;        /* o detalhe dourado */
-      --dourado-claro: #e9c95f;  /* dourado ao passar o mouse */
+      --papel: #f2ece2;          /* fundo creme da página */
+      --papel-escuro: #e7dfd1;   /* creme um pouco mais escuro (detalhes) */
+      --tinta: #1a1714;          /* quase preto: textos e botão principal */
+      --tinta-suave: #5c544b;    /* texto secundário */
+      --linha: #d3c8b6;          /* linhas e bordas */
+      --vermelho: #a3301d;       /* o vermelho do poste de barbeiro */
+      --azul: #1f3a5f;           /* o azul do poste (só na faixa do topo) */
+      --quadro: #1d1a17;         /* fundo escuro da tabela de preços */
+      --quadro-texto: #efe8dc;   /* texto sobre o fundo escuro */
+      --quadro-suave: #a89e91;   /* texto secundário sobre o fundo escuro */
+      --quadro-linha: #3a352f;   /* linhas sobre o fundo escuro */
       --verde-whatsapp: #25d366;
-      --raio: 16px;              /* arredondamento dos cantos */
+
+      --fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+      --fonte-texto: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --raio: 6px;               /* arredondamento dos cantos */
     }
 
     /* ==========================================================
@@ -66,12 +84,12 @@
 
     body {
       margin: 0;
-      background: var(--fundo);
-      color: var(--texto);
-      /* Fonte do próprio celular/computador: carrega na hora e é bem legível */
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-size: 1rem;
+      background: var(--papel);
+      color: var(--tinta);
+      font-family: var(--fonte-texto);
+      font-size: 1.0625rem;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     h1,
@@ -82,10 +100,18 @@
     }
 
     h1,
-    h2,
-    h3 {
-      line-height: 1.15;
+    h2 {
+      font-family: var(--fonte-titulo);
+      font-weight: 650;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
       text-wrap: balance;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.3;
     }
 
     a {
@@ -94,13 +120,13 @@
 
     /* Contorno visível para quem navega pelo teclado */
     a:focus-visible {
-      outline: 3px solid var(--dourado-claro);
+      outline: 3px solid var(--vermelho);
       outline-offset: 3px;
     }
 
     /* Limita a largura do conteúdo e dá respiro nas laterais */
     .container {
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -114,18 +140,18 @@
     }
 
     .icone {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       flex-shrink: 0;
     }
 
-    /* Texto pequeno dourado que aparece acima dos títulos */
-    .selo {
-      margin-bottom: 10px;
-      color: var(--dourado);
+    /* Texto pequeno que aparece acima dos títulos das seções */
+    .rotulo {
+      margin-bottom: 14px;
+      color: var(--vermelho);
       font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
@@ -137,293 +163,347 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      min-height: 52px;
-      padding: 12px 26px;
-      border: 2px solid var(--dourado);
-      border-radius: 999px;
-      background: var(--dourado);
-      color: #111;
+      min-height: 56px;
+      padding: 14px 26px;
+      border: 1.5px solid var(--tinta);
+      border-radius: var(--raio);
+      background: var(--tinta);
+      color: var(--papel);
       font-size: 1.05rem;
-      font-weight: 800;
+      font-weight: 600;
       text-decoration: none;
       transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
     }
 
     .botao:hover {
-      border-color: var(--dourado-claro);
-      background: var(--dourado-claro);
-      transform: translateY(-2px);
+      background: var(--vermelho);
+      border-color: var(--vermelho);
     }
 
-    /* Botão principal do topo: grande e fácil de tocar no celular */
-    .botao--grande {
-      display: flex;
-      width: 100%;
-      max-width: 380px;
-      min-height: 62px;
-      margin: 0 auto;
-      padding: 14px 16px;
-      font-size: clamp(1.05rem, 4.8vw, 1.15rem); /* diminui um pouco em telas bem estreitas */
-      box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25);
+    .botao:active {
+      transform: translateY(1px);
     }
 
     /* Botão só com contorno (usado no "Abrir no Google Maps") */
     .botao--contorno {
       background: transparent;
-      color: var(--dourado);
+      color: var(--tinta);
     }
 
     .botao--contorno:hover {
-      color: #111;
+      color: var(--papel);
     }
 
     /* ==========================================================
        1. TOPO
        ========================================================== */
-    .topo {
+
+    /* Faixa listrada lá em cima, nas cores do poste de barbeiro */
+    .faixa {
+      height: 8px;
+      background: repeating-linear-gradient(-45deg,
+        var(--vermelho) 0 12px, var(--papel) 12px 24px,
+        var(--azul) 24px 36px, var(--papel) 36px 48px);
+    }
+
+    .topo__barra {
       display: flex;
-      align-items: center;
-      min-height: 80vh;
-      min-height: 80svh; /* quase a tela toda, deixando aparecer que a página continua */
-      padding: 64px 0;
-      text-align: center;
-      background:
-        radial-gradient(120% 60% at 50% 0%, rgba(212, 175, 55, 0.2), transparent 70%),
-        var(--fundo);
-      border-bottom: 1px solid var(--borda);
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px 16px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--linha);
     }
 
-    .topo .container {
-      width: 100%;
+    .marca {
+      font-family: var(--fonte-titulo);
+      font-size: 1.3rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
     }
 
-    /* Poste de barbeiro feito só com CSS (as listras "sobem" devagar) */
-    .poste {
-      width: 24px;
-      height: 68px;
-      margin: 0 auto 24px;
-      border: 2px solid var(--dourado);
-      border-radius: 999px;
-      background-image: linear-gradient(45deg,
-        var(--dourado) 0 16.66%, var(--texto) 0 33.33%, var(--fundo) 0 50%,
-        var(--dourado) 0 66.66%, var(--texto) 0 83.33%, var(--fundo) 0);
-      background-size: 24px 24px;
-      box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
-      animation: listras 3s linear infinite;
-    }
-
-    @keyframes listras {
-      to {
-        background-position: 0 -24px;
-      }
-    }
-
-    /* Risquinhos dourados dos dois lados do "Centro · Teresina-PI" */
-    .topo .selo {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .topo .selo::before,
-    .topo .selo::after {
-      content: "";
-      width: 22px;
-      height: 1px;
-      background: var(--dourado);
-    }
-
-    .topo h1 {
-      font-size: clamp(2.75rem, 13vw, 5.5rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-    }
-
-    .topo h1 span {
-      display: block;
-      color: var(--dourado);
-    }
-
-    .topo__frase {
-      max-width: 30ch;
-      margin: 20px auto 32px;
-      color: var(--texto-suave);
-      font-size: 1.15rem;
-    }
-
-    .topo__link {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 8px 4px;
-      color: var(--texto-suave);
+    .topo__endereco {
+      color: var(--tinta-suave);
+      font-size: 0.95rem;
       text-decoration: none;
     }
 
-    .topo__link:hover {
-      color: var(--dourado);
+    .topo__endereco:hover {
+      color: var(--tinta);
+      text-decoration: underline;
+    }
+
+    .topo__grade {
+      display: grid;
+      gap: 40px;
+      padding-top: 56px;
+      padding-bottom: 72px;
+    }
+
+    .topo h1 {
+      font-size: clamp(2.6rem, 11vw, 5.4rem);
+    }
+
+    /* A palavra "marcada" em itálico vermelho */
+    .topo h1 em {
+      color: var(--vermelho);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .topo__frase {
+      max-width: 34ch;
+      margin: 24px 0 32px;
+      color: var(--tinta-suave);
+      font-size: 1.15rem;
+    }
+
+    .topo__acoes {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 24px;
+    }
+
+    .topo__acoes .botao {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .link-seta {
+      padding: 8px 0;
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 5px;
+    }
+
+    .link-seta:hover {
+      color: var(--vermelho);
+    }
+
+    /* Cartão "Hoje": mostra se está aberto agora */
+    .agora {
+      align-self: end;
+      padding: 22px 24px;
+      border: 1px solid var(--linha);
+      border-radius: var(--raio);
+      background: var(--papel-escuro);
+    }
+
+    .agora__titulo {
+      color: var(--tinta-suave);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .agora__status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      font-family: var(--fonte-titulo);
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    /* Bolinha colorida ao lado do status (o JavaScript escolhe a cor) */
+    .agora__status::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--linha);
+    }
+
+    .agora[data-estado="aberto"] .agora__status::before {
+      background: #2f8a4c;
+    }
+
+    .agora[data-estado="fechado"] .agora__status::before {
+      background: var(--vermelho);
+    }
+
+    .agora__detalhe {
+      margin-top: 6px;
+      color: var(--tinta-suave);
+      font-size: 0.95rem;
     }
 
     /* ==========================================================
        SEÇÕES (estrutura que se repete nas partes 2, 3 e 4)
        ========================================================== */
     .secao {
-      padding: 72px 0;
+      padding: 80px 0;
     }
 
-    .secao--alternada {
-      background: var(--fundo-claro);
-      border-top: 1px solid var(--borda);
-      border-bottom: 1px solid var(--borda);
-    }
-
-    .secao__cabecalho {
-      margin-bottom: 36px;
-      text-align: center;
-    }
-
-    .secao__cabecalho h2 {
-      font-size: clamp(1.75rem, 7vw, 2.5rem);
-      font-weight: 800;
-    }
-
-    /* Risquinho dourado embaixo dos títulos */
-    .secao__cabecalho h2::after {
-      content: "";
-      display: block;
-      width: 56px;
-      height: 3px;
-      margin: 16px auto 0;
-      border-radius: 3px;
-      background: var(--dourado);
-    }
-
-    .cartao {
-      padding: 22px;
-      background: var(--cartao);
-      border: 1px solid var(--borda);
-      border-radius: var(--raio);
-    }
-
-    .cartao h3 {
-      font-size: 1.2rem;
-    }
-
-    /* Círculo dourado com um emoji dentro */
-    .emoji {
-      display: grid;
-      place-items: center;
-      width: 52px;
-      height: 52px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.1);
-      font-size: 1.5rem;
-      line-height: 1;
+    .secao h2 {
+      font-size: clamp(2.1rem, 8vw, 3.4rem);
     }
 
     /* ==========================================================
-       2. SERVIÇOS E PREÇOS
+       2. PREÇOS (fundo escuro, como a tabela pendurada na parede)
        ========================================================== */
-    .lista-servicos {
-      display: grid;
-      gap: 18px;
-      max-width: 680px;
-      margin: 0 auto;
+    .precos {
+      background: var(--quadro);
+      color: var(--quadro-texto);
     }
 
-    /* Cada serviço: emoji, nome e preço na linha de cima; descrição embaixo */
-    .servico {
-      position: relative;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 10px 14px;
+    .precos .rotulo {
+      color: #e0836f;
     }
 
-    .servico h3 small {
-      display: block;
-      color: var(--texto-suave);
-      font-size: 0.85rem;
+    .precos__grade {
+      display: grid;
+      gap: 40px;
+    }
+
+    .precos__intro {
+      max-width: 30ch;
+      margin-top: 18px;
+      color: var(--quadro-suave);
+    }
+
+    .tabela-precos {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--quadro-linha);
+    }
+
+    .tabela-precos li {
+      padding: 26px 0;
+      border-bottom: 1px solid var(--quadro-linha);
+    }
+
+    /* Nome ........ preço (os pontinhos crescem para preencher a linha) */
+    .tabela-precos__linha {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .tabela-precos__linha::after {
+      content: "";
+      order: 1;
+      flex: 1;
+      min-width: 24px;
+      border-bottom: 2px dotted var(--quadro-linha);
+      transform: translateY(-6px);
+    }
+
+    .tabela-precos h3 {
+      font-family: var(--fonte-titulo);
+      font-size: 1.7rem;
       font-weight: 500;
     }
 
     .preco {
-      color: var(--dourado);
-      font-size: 1.6rem;
-      font-weight: 800;
+      order: 2;
+      font-family: var(--fonte-titulo);
+      font-size: 1.7rem;
+      font-weight: 500;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
     .preco small {
-      font-size: 0.6em;
+      margin-right: 2px;
+      color: var(--quadro-suave);
+      font-family: var(--fonte-texto);
+      font-size: 0.5em;
+      font-weight: 500;
     }
 
-    .servico__descricao {
-      grid-column: 1 / -1;
-      color: var(--texto-suave);
-      font-size: 0.95rem;
+    .tabela-precos p:not(.preco) {
+      max-width: 46ch;
+      margin-top: 6px;
+      color: var(--quadro-suave);
     }
 
-    /* Cartão do combo, com borda dourada */
-    .servico--destaque {
-      border-color: var(--dourado);
-      background: linear-gradient(160deg, rgba(212, 175, 55, 0.14), var(--cartao) 55%);
-    }
-
-    .etiqueta {
-      position: absolute;
-      top: -12px;
-      right: 18px;
-      padding: 3px 12px;
-      border-radius: 999px;
-      background: var(--dourado);
-      color: #111;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+    /* Observação do combo, em vermelho claro */
+    .tabela-precos .nota {
+      display: inline-block;
+      margin-top: 10px;
+      color: #e0836f;
+      font-size: 0.9rem;
+      font-weight: 600;
     }
 
     /* ==========================================================
-       3. POR QUE ESCOLHER A GENTE
+       3. COMO FUNCIONA
        ========================================================== */
-    .grade {
+    .como__grade {
       display: grid;
-      gap: 18px;
+      gap: 40px;
     }
 
-    /* No celular: emoji à esquerda, texto à direita */
-    .diferencial {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      align-content: start;
-      gap: 6px 16px;
+    .passos {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: passo;
     }
 
-    .diferencial .emoji {
+    /* Cada item: número grande à esquerda, texto à direita */
+    .passos li {
+      display: grid;
+      grid-template-columns: 3.2rem 1fr;
+      gap: 4px 16px;
+      padding: 26px 0;
+      border-top: 1px solid var(--linha);
+      counter-increment: passo;
+    }
+
+    .passos li:last-child {
+      border-bottom: 1px solid var(--linha);
+    }
+
+    .passos li::before {
+      content: counter(passo, decimal-leading-zero);
       grid-row: span 2;
+      color: var(--vermelho);
+      font-family: var(--fonte-titulo);
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1.1;
     }
 
-    .diferencial p {
-      color: var(--texto-suave);
+    .passos p {
+      color: var(--tinta-suave);
     }
 
     /* ==========================================================
-       4. HORÁRIO E ENDEREÇO
+       4. ONDE FICA (horário, endereço e mapa)
        ========================================================== */
-    .local,
+    .local {
+      padding-top: 0;
+    }
+
+    .local__grade {
+      display: grid;
+      gap: 32px;
+      margin-top: 36px;
+    }
+
     .local__info {
       display: grid;
-      gap: 18px;
+      align-content: start;
+      gap: 36px;
     }
 
     .local h3 {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      color: var(--tinta-suave);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     .horarios {
@@ -436,74 +516,78 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px dashed var(--borda);
-    }
-
-    .horarios li:last-child {
-      border-bottom: 0;
-    }
-
-    .horarios span {
-      color: var(--texto-suave);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--linha);
     }
 
     .horarios strong {
+      font-weight: 600;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Linha do dia de hoje (o JavaScript marca qual é) */
+    .horarios li.hoje span::after {
+      content: "hoje";
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--tinta);
+      color: var(--papel);
+      font-size: 0.75rem;
+      font-weight: 600;
+      vertical-align: 2px;
     }
 
     address {
-      font-size: 1.05rem;
+      font-family: var(--fonte-titulo);
+      font-size: 1.5rem;
       font-style: normal;
+      line-height: 1.3;
     }
 
     .referencia {
-      margin: 6px 0 20px;
-      color: var(--texto-suave);
-      font-size: 0.95rem;
+      margin: 8px 0 22px;
+      color: var(--tinta-suave);
     }
 
     .mapa {
       display: block;
       width: 100%;
       height: 320px;
-      border: 1px solid var(--borda);
+      border: 1px solid var(--linha);
       border-radius: var(--raio);
-      background: var(--cartao);
+      background: var(--papel-escuro);
+      filter: grayscale(0.35) contrast(1.05);
     }
 
     /* ==========================================================
        5. RODAPÉ
        ========================================================== */
     .rodape {
-      padding: 56px 0 110px; /* espaço extra embaixo para o botão flutuante não cobrir o texto */
-      background: #09090b;
-      border-top: 1px solid var(--borda);
-      text-align: center;
+      padding: 48px 0 112px; /* espaço extra embaixo para o botão flutuante não cobrir o texto */
+      background: var(--quadro);
+      color: var(--quadro-texto);
     }
 
-    .rodape__marca {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .rodape__grade {
+      display: grid;
+      gap: 28px;
     }
 
-    .rodape__marca span {
-      color: var(--dourado);
+    .rodape .marca {
+      font-size: 1.6rem;
     }
 
     .rodape__frase {
-      margin-top: 6px;
-      color: var(--texto-suave);
+      margin-top: 4px;
+      color: var(--quadro-suave);
     }
 
     .rodape__links {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin: 28px 0;
+      gap: 10px;
     }
 
     .rodape__links a {
@@ -511,27 +595,27 @@
       align-items: center;
       gap: 10px;
       min-height: 48px;
-      padding: 10px 20px;
-      border: 1px solid var(--borda);
-      border-radius: 999px;
-      background: var(--cartao);
-      font-weight: 600;
+      padding: 10px 18px;
+      border: 1px solid var(--quadro-linha);
+      border-radius: var(--raio);
+      font-weight: 500;
       text-decoration: none;
-      transition: border-color 0.15s ease, color 0.15s ease;
+      transition: border-color 0.15s ease;
     }
 
     .rodape__links a:hover {
-      border-color: var(--dourado);
-      color: var(--dourado);
-    }
-
-    .rodape__links .icone {
-      color: var(--dourado);
+      border-color: var(--quadro-texto);
     }
 
     .rodape__aviso {
-      color: #8a8a85;
+      padding-top: 24px;
+      border-top: 1px solid var(--quadro-linha);
+      color: var(--quadro-suave);
       font-size: 0.85rem;
+    }
+
+    .rodape a:focus-visible {
+      outline-color: #e0836f;
     }
 
     /* ==========================================================
@@ -549,12 +633,12 @@
       border-radius: 50%;
       background: var(--verde-whatsapp);
       color: #fff;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 18px rgba(26, 23, 20, 0.3);
       transition: transform 0.15s ease;
     }
 
     .whatsapp-flutuante:hover {
-      transform: scale(1.08);
+      transform: scale(1.06);
     }
 
     .whatsapp-flutuante .icone {
@@ -569,36 +653,58 @@
        ========================================================== */
     @media (min-width: 768px) {
       .secao {
-        padding: 96px 0;
+        padding: 112px 0;
       }
 
-      .grade {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 22px;
+      .local {
+        padding-top: 0;
       }
 
-      /* No computador: emoji em cima, texto embaixo */
-      .diferencial {
-        grid-template-columns: 1fr;
+      /* Título à esquerda, cartão "Hoje" à direita */
+      .topo__grade {
+        grid-template-columns: 1.6fr 1fr;
+        align-items: end;
+        gap: 56px;
+        padding-top: 88px;
+        padding-bottom: 104px;
       }
 
-      .diferencial .emoji {
-        grid-row: auto;
-        margin-bottom: 8px;
+      .topo__acoes .botao {
+        width: auto;
+      }
+
+      /* Título da seção à esquerda, conteúdo à direita */
+      .precos__grade,
+      .como__grade {
+        grid-template-columns: 1fr 1.5fr;
+        gap: 64px;
+      }
+
+      .precos__grade > div:first-child,
+      .como__grade > div:first-child {
+        position: sticky;
+        top: 40px;
+        align-self: start;
       }
 
       /* Horário e endereço à esquerda, mapa à direita */
-      .local {
-        grid-template-columns: 1fr 1.3fr;
-      }
-
-      .local__info {
-        align-content: start;
+      .local__grade {
+        grid-template-columns: 1fr 1.4fr;
+        gap: 48px;
       }
 
       .mapa {
         height: 100%;
-        min-height: 420px;
+        min-height: 440px;
+      }
+
+      .rodape__grade {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+
+      .rodape__aviso {
+        grid-column: 1 / -1;
       }
 
       .whatsapp-flutuante {
@@ -613,11 +719,8 @@
         scroll-behavior: auto;
       }
 
-      .poste {
-        animation: none;
-      }
-
       .botao,
+      .rodape__links a,
       .whatsapp-flutuante {
         transition: none;
       }
@@ -640,120 +743,144 @@
 
   <!-- ====================== 1. TOPO ====================== -->
   <header class="topo">
-    <div class="container">
-      <div class="poste" aria-hidden="true"></div>
-      <p class="selo">Centro · Teresina-PI</p>
-      <h1>Barbearia <span>Modelo</span></h1>
-      <p class="topo__frase">Corte e barba no horário que você marcar, sem fila e sem complicação.</p>
+    <div class="faixa" aria-hidden="true"></div>
+
+    <div class="container topo__barra">
+      <span class="marca">Barbearia Modelo</span>
+      <!-- TROQUE AQUI: endereço curto do cliente -->
+      <a class="topo__endereco" href="#local">Rua Exemplo, 123 · Centro, Teresina</a>
+    </div>
+
+    <div class="container topo__grade">
+      <div>
+        <h1>Corte e barba com hora <em>marcada</em>.</h1>
+        <p class="topo__frase">Você escolhe o horário pelo WhatsApp e senta na cadeira na hora combinada. Sem ficar esperando a vez.</p>
+
+        <div class="topo__acoes">
+          <!--
+            TROQUE AQUI · WhatsApp (1 de 3)
+            5586999999999 = 55 (Brasil) + 86 (DDD) + número. Só números: sem +, espaço ou traço.
+            Depois de "?text=" vem a mensagem pronta "Olá! Quero agendar um horário."
+            escrita em formato de link (%20 = espaço, %C3%A1 = á, %21 = !).
+          -->
+          <a class="botao" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+            <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
+            Agendar pelo WhatsApp
+          </a>
+          <a class="link-seta" href="#precos">Ver preços</a>
+        </div>
+      </div>
 
       <!--
-        TROQUE AQUI · WhatsApp (1 de 3)
-        5586999999999 = 55 (Brasil) + 86 (DDD) + número. Só números: sem +, espaço ou traço.
-        Depois de "?text=" vem a mensagem pronta "Olá! Quero agendar um horário."
-        escrita em formato de link (%20 = espaço, %C3%A1 = á, %21 = !).
+        Cartão "Hoje". O texto abaixo aparece se o JavaScript não rodar.
+        Com JavaScript, ele vira "Aberto agora" ou "Fechado agora",
+        usando os horários da seção "Onde fica" (não precisa mexer aqui).
       -->
-      <a class="botao botao--grande" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
-        <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
-        Agendar pelo WhatsApp
-      </a>
-
-      <a class="topo__link" href="#servicos">Ver serviços e preços <span aria-hidden="true">↓</span></a>
+      <aside class="agora" aria-live="polite">
+        <p class="agora__titulo">Hoje</p>
+        <p class="agora__status" id="agora-status">Seg. a sáb.</p>
+        <p class="agora__detalhe" id="agora-detalhe">Veja os horários em <a href="#local">Onde fica</a>.</p>
+      </aside>
     </div>
   </header>
 
   <main>
 
-    <!-- ====================== 2. SERVIÇOS E PREÇOS ====================== -->
-    <section class="secao" id="servicos" aria-labelledby="titulo-servicos">
-      <div class="container">
-        <div class="secao__cabecalho">
-          <p class="selo">O que fazemos</p>
-          <h2 id="titulo-servicos">Serviços e preços</h2>
+    <!-- ====================== 2. PREÇOS ====================== -->
+    <section class="secao precos" id="precos" aria-labelledby="titulo-precos">
+      <div class="container precos__grade">
+        <div>
+          <p class="rotulo">Serviços</p>
+          <h2 id="titulo-precos">Preços</h2>
+          <p class="precos__intro">O valor que está aqui é o valor que você paga no balcão.</p>
         </div>
 
-        <!-- TROQUE AQUI: os preços são de exemplo. Se mudar, ajuste também a etiqueta "Economize" do combo. -->
-        <div class="lista-servicos">
-          <article class="cartao servico">
-            <span class="emoji" aria-hidden="true">✂️</span>
-            <h3>Corte</h3>
-            <p class="preco"><small>R$</small> 40</p>
-            <p class="servico__descricao">Máquina ou tesoura, do social ao degradê, com acabamento na navalha.</p>
-          </article>
+        <!-- TROQUE AQUI: os preços são de exemplo. Se mudar, ajuste também a nota do combo. -->
+        <ul class="tabela-precos">
+          <li>
+            <div class="tabela-precos__linha">
+              <h3>Corte</h3>
+              <p class="preco"><small>R$</small>40</p>
+            </div>
+            <p>Máquina ou tesoura, do social ao degradê. Acabamento na navalha.</p>
+          </li>
 
-          <article class="cartao servico">
-            <span class="emoji" aria-hidden="true">🧔</span>
-            <h3>Barba</h3>
-            <p class="preco"><small>R$</small> 30</p>
-            <p class="servico__descricao">Modelagem na navalha, toalha quente e finalização com balm.</p>
-          </article>
+          <li>
+            <div class="tabela-precos__linha">
+              <h3>Barba</h3>
+              <p class="preco"><small>R$</small>30</p>
+            </div>
+            <p>Desenho na navalha, toalha quente e balm no final.</p>
+          </li>
 
-          <article class="cartao servico servico--destaque">
-            <span class="etiqueta">Economize R$ 10</span>
-            <span class="emoji" aria-hidden="true">💈</span>
-            <h3>Combo <small>Corte + barba</small></h3>
-            <p class="preco"><small>R$</small> 60</p>
-            <p class="servico__descricao">O pacote completo para sair renovado, pagando menos.</p>
-          </article>
-        </div>
+          <li>
+            <div class="tabela-precos__linha">
+              <h3>Corte + barba</h3>
+              <p class="preco"><small>R$</small>60</p>
+            </div>
+            <p>Os dois na mesma visita.</p>
+            <span class="nota">R$ 10 a menos do que pagar separado</span>
+          </li>
+        </ul>
       </div>
     </section>
 
-    <!-- ====================== 3. POR QUE ESCOLHER A GENTE ====================== -->
-    <section class="secao secao--alternada" id="diferenciais" aria-labelledby="titulo-diferenciais">
-      <div class="container">
-        <div class="secao__cabecalho">
-          <p class="selo">Diferenciais</p>
-          <h2 id="titulo-diferenciais">Por que escolher a gente</h2>
+    <!-- ====================== 3. COMO FUNCIONA ====================== -->
+    <section class="secao" id="como-funciona" aria-labelledby="titulo-como">
+      <div class="container como__grade">
+        <div>
+          <p class="rotulo">Como funciona</p>
+          <h2 id="titulo-como">O que esperar daqui</h2>
         </div>
 
-        <div class="grade">
-          <article class="cartao diferencial">
-            <span class="emoji" aria-hidden="true">⏰</span>
-            <h3>Hora marcada, sem fila</h3>
-            <p>Você agenda pelo WhatsApp e é atendido no horário combinado.</p>
-          </article>
-
-          <article class="cartao diferencial">
-            <span class="emoji" aria-hidden="true">💬</span>
-            <h3>Do jeito que você quer</h3>
-            <p>Antes de começar, a gente conversa para entender o estilo que combina com você.</p>
-          </article>
-
-          <article class="cartao diferencial">
-            <span class="emoji" aria-hidden="true">❄️</span>
-            <h3>Ambiente climatizado</h3>
-            <p>Ar-condicionado e um cafezinho para você relaxar. Afinal, aqui é Teresina.</p>
-          </article>
-        </div>
+        <ol class="passos">
+          <li>
+            <h3>Marcou às 15h, senta às 15h</h3>
+            <p>O horário é reservado para você. Mande uma mensagem no WhatsApp e a gente confirma na hora.</p>
+          </li>
+          <li>
+            <h3>Conversa antes da máquina</h3>
+            <p>O barbeiro pergunta o que você quer e diz o que funciona no seu tipo de cabelo antes de começar.</p>
+          </li>
+          <li>
+            <h3>Ar-condicionado ligado</h3>
+            <p>E café passado enquanto você espera. Afinal, aqui é Teresina.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- ====================== 4. HORÁRIO E ENDEREÇO ====================== -->
-    <section class="secao" id="local" aria-labelledby="titulo-local">
+    <!-- ====================== 4. ONDE FICA ====================== -->
+    <section class="secao local" id="local" aria-labelledby="titulo-local">
       <div class="container">
-        <div class="secao__cabecalho">
-          <p class="selo">Visite a gente</p>
-          <h2 id="titulo-local">Horário e endereço</h2>
-        </div>
+        <p class="rotulo">Visite</p>
+        <h2 id="titulo-local">Onde fica</h2>
 
-        <div class="local">
+        <div class="local__grade">
           <div class="local__info">
-            <!-- TROQUE AQUI: horários de exemplo -->
-            <div class="cartao">
-              <h3><span aria-hidden="true">🕒</span> Horário de funcionamento</h3>
-              <ul class="horarios">
-                <li><span>Segunda a sexta</span> <strong>9h às 19h</strong></li>
-                <li><span>Sábado</span> <strong>8h às 16h</strong></li>
-                <li><span>Domingo</span> <strong>Fechado</strong></li>
+            <!--
+              TROQUE AQUI: horários de exemplo.
+              Além do texto, ajuste os "data-" de cada linha. É deles que sai o "Aberto agora":
+                data-dias  = dias da semana (0 = domingo, 1 = segunda ... 6 = sábado), separados por vírgula
+                data-abre  = hora que abre   (ex.: 9 ou 8:30)
+                data-fecha = hora que fecha  (ex.: 19 ou 18:30)
+              Dia fechado: deixe só o data-dias, sem data-abre e data-fecha.
+            -->
+            <div>
+              <h3>Horário</h3>
+              <ul class="horarios" id="horarios">
+                <li data-dias="1,2,3,4,5" data-abre="9" data-fecha="19"><span>Segunda a sexta</span> <strong>9h às 19h</strong></li>
+                <li data-dias="6" data-abre="8" data-fecha="16"><span>Sábado</span> <strong>8h às 16h</strong></li>
+                <li data-dias="0"><span>Domingo</span> <strong>Fechado</strong></li>
               </ul>
             </div>
 
             <!-- TROQUE AQUI: endereço genérico de exemplo -->
-            <div class="cartao">
-              <h3><span aria-hidden="true">📍</span> Endereço</h3>
+            <div>
+              <h3>Endereço</h3>
               <address>
-                Rua Exemplo, 123 – Centro<br>
-                Teresina – PI
+                Rua Exemplo, 123<br>
+                Centro, Teresina – PI
               </address>
               <p class="referencia">Ponto de referência: [TEXTO DE EXEMPLO]</p>
               <!-- TROQUE AQUI: depois de "query=" vai o endereço do cliente (use + no lugar dos espaços) -->
@@ -781,9 +908,11 @@
 
   <!-- ====================== 5. RODAPÉ ====================== -->
   <footer class="rodape">
-    <div class="container">
-      <p class="rodape__marca">Barbearia <span>Modelo</span></p>
-      <p class="rodape__frase">Corte e barba com hora marcada no Centro de Teresina-PI.</p>
+    <div class="container rodape__grade">
+      <div>
+        <p class="marca">Barbearia Modelo</p>
+        <p class="rodape__frase">Corte e barba com hora marcada no Centro de Teresina.</p>
+      </div>
 
       <nav class="rodape__links" aria-label="Redes sociais e contato">
         <!-- TROQUE AQUI: link do Instagram do cliente, ex.: https://www.instagram.com/nomedoperfil/ -->
@@ -813,6 +942,90 @@
       <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
     </a>
   </footer>
+
+  <!--
+    "ABERTO AGORA / FECHADO AGORA"
+    Lê os horários da lista da seção "Onde fica" e compara com a hora de Teresina.
+    Não precisa mexer aqui: para mudar horários, edite a lista lá em cima.
+  -->
+  <script>
+    (function () {
+      var lista = document.getElementById("horarios");
+      var cartao = document.querySelector(".agora");
+      var status = document.getElementById("agora-status");
+      var detalhe = document.getElementById("agora-detalhe");
+      if (!lista || !cartao || !status || !detalhe) return;
+
+      var nomesDias = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+
+      // "9" vira 9, "8:30" vira 8.5
+      function paraHoras(texto) {
+        var partes = String(texto).split(":");
+        return Number(partes[0]) + Number(partes[1] || 0) / 60;
+      }
+
+      // 9 vira "9h", 8.5 vira "8h30"
+      function escreverHora(horas) {
+        var h = Math.floor(horas);
+        var m = Math.round((horas - h) * 60);
+        return h + "h" + (m ? String(m).padStart(2, "0") : "");
+      }
+
+      // Monta a tabela da semana: para cada dia (0 a 6), o horário ou null se fechado
+      var semana = [null, null, null, null, null, null, null];
+      var linhaDoDia = [];
+      Array.prototype.forEach.call(lista.querySelectorAll("li[data-dias]"), function (li) {
+        li.getAttribute("data-dias").split(",").forEach(function (d) {
+          var dia = Number(d);
+          linhaDoDia[dia] = li;
+          if (li.hasAttribute("data-abre") && li.hasAttribute("data-fecha")) {
+            semana[dia] = { abre: paraHoras(li.getAttribute("data-abre")), fecha: paraHoras(li.getAttribute("data-fecha")) };
+          }
+        });
+      });
+
+      // Dia da semana e hora agora, no fuso de Teresina (mesmo para quem abre o site de outro estado)
+      var agora = {};
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Fortaleza",
+        weekday: "short",
+        hour: "numeric",
+        minute: "numeric",
+        hourCycle: "h23"
+      }).formatToParts(new Date()).forEach(function (p) { agora[p.type] = p.value; });
+
+      var hoje = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(agora.weekday);
+      var horaAgora = Number(agora.hour) + Number(agora.minute) / 60;
+      if (hoje < 0) return;
+
+      if (linhaDoDia[hoje]) linhaDoDia[hoje].classList.add("hoje");
+
+      var turnoHoje = semana[hoje];
+      if (turnoHoje && horaAgora >= turnoHoje.abre && horaAgora < turnoHoje.fecha) {
+        cartao.setAttribute("data-estado", "aberto");
+        status.textContent = "Aberto agora";
+        detalhe.textContent = "Atendendo até as " + escreverHora(turnoHoje.fecha) + ".";
+        return;
+      }
+
+      cartao.setAttribute("data-estado", "fechado");
+      status.textContent = "Fechado agora";
+
+      if (turnoHoje && horaAgora < turnoHoje.abre) {
+        detalhe.textContent = "Abre hoje às " + escreverHora(turnoHoje.abre) + ". Já dá para marcar pelo WhatsApp.";
+        return;
+      }
+
+      for (var i = 1; i <= 7; i++) {
+        var dia = (hoje + i) % 7;
+        if (semana[dia]) {
+          var quando = i === 1 ? "amanhã" : nomesDias[dia];
+          detalhe.textContent = "Abre " + quando + " às " + escreverHora(semana[dia].abre) + ". Já dá para marcar pelo WhatsApp.";
+          return;
+        }
+      }
+    })();
+  </script>
 
 </body>
 </html>
