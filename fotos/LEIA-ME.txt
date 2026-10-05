@@ -1,0 +1,7 @@
+Coloque aqui as fotos da barbearia, com estes nomes:
+
+  atendimento.jpg  foto vertical do barbeiro atendendo (de preferência 1200 x 1500 pixels)
+  ambiente.jpg     foto horizontal do salão (de preferência 1600 x 900 pixels)
+
+Enquanto as fotos não estiverem aqui, o site mostra um quadro cinza no lugar de cada uma.
+Use fotos da própria barbearia: elas passam mais confiança do que fotos de banco de imagens.
