@@ -2,1025 +2,999 @@
 <!--
   ================================================================
   BARBEARIA MODELO: landing page de demonstração
-  (negócio fictício, feito para portfólio)
+  Direção visual "Navalha Noturna": carvão, osso e vermelho-tijolo.
 
-  Arquivos do site:
-    index.html  este arquivo, com o conteúdo (HTML), o visual (CSS,
-                dentro da tag <style>) e um pouco de JavaScript no final
-    fontes/     as fontes Geist e Geist Mono (não precisa mexer)
-    fotos/      as fotos da barbearia (veja "TROQUE AQUI: Fotos")
+  Um arquivo só, sem build. Publicado no GitHub Pages.
+  Bibliotecas por CDN: GSAP + ScrollTrigger + DrawSVG (animações)
+  e Google Fonts (Barlow Condensed + Barlow).
 
-  Não precisa instalar nada. Para publicar, envie os três juntos.
+  PARA USAR COM UM CLIENTE REAL, procure no código:
+    "TROCAR POR FOTO DO CLIENTE"  fotos (6 lugares)
+    "TROCAR:"                     WhatsApp, preços, horários,
+                                  endereço, mapa e Instagram
 
-  PARA USAR COM UM CLIENTE REAL, procure os comentários "TROQUE AQUI":
-    1. Número do WhatsApp: 5586999999999 aparece em 3 links.
-       Use Ctrl+H (Localizar e substituir) para trocar todos de uma vez.
-       No rodapé também tem o número escrito: (86) 99999-9999.
-    2. Fotos: coloque as fotos do cliente na pasta fotos/ com os nomes
-       atendimento.jpg e ambiente.jpg.
-    3. Endereço e mapa.
-    4. Nome, preços, horários e link do Instagram
-       (e apague o aviso de "site de demonstração" no rodapé).
+  WhatsApp: 5586999999999 aparece em vários links. Use Ctrl+H
+  (Localizar e substituir) para trocar todos de uma vez.
   ================================================================
 -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <!-- Título da aba e descrição: aparecem no Google e na prévia do link no WhatsApp -->
-  <title>Barbearia Modelo | Corte e barba em Teresina-PI</title>
-  <meta name="description" content="Corte, barba e combo com hora marcada no Centro de Teresina-PI. Agende pelo WhatsApp.">
-  <meta property="og:title" content="Barbearia Modelo | Corte e barba em Teresina-PI">
-  <meta property="og:description" content="Corte, barba e combo com hora marcada. Agende pelo WhatsApp.">
+  <title>Barbearia Modelo | Corte e barba com hora marcada em Teresina</title>
+  <meta name="description" content="Corte, barba e combo com hora marcada no Centro de Teresina-PI. Escolha o horário e agende pelo WhatsApp.">
+  <meta property="og:title" content="Barbearia Modelo | Corte bom, hora marcada">
+  <meta property="og:description" content="Corte, barba e combo com hora marcada no Centro de Teresina. Agende pelo WhatsApp.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f4f4f5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#14120F">
 
-  <!-- Ícone da aba do navegador: o emoji 💈 (não precisa de arquivo de imagem) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E">
+  <!-- Ícone da aba: tesoura (Lucide) em vermelho-tijolo sobre carvão -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2314120F'/%3E%3Cg transform='translate(4 4)' fill='none' stroke='%23D9573B' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Cpath d='M8.12 8.12 12 12'/%3E%3Cpath d='M20 4 8.12 15.88'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cpath d='M14.8 14.8 20 20'/%3E%3C/g%3E%3C/svg%3E">
 
-  <!-- Carrega a fonte principal mais cedo, para o título não "piscar" -->
-  <link rel="preload" href="fontes/geist.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Fontes: no máximo 2 famílias -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap">
+
+  <!-- Esconde o que vai animar só até o GSAP assumir (some sozinho em 3s se o GSAP não carregar) -->
+  <script>
+    if (window.matchMedia && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("anima");
+      setTimeout(function () { document.documentElement.classList.remove("anima"); }, 3000);
+    }
+  </script>
 
   <style>
     /* ==========================================================
-       FONTES (ficam na pasta fontes/, licença livre OFL)
-       ========================================================== */
-    @font-face {
-      font-family: "Geist";
-      src: url("fontes/geist.woff2") format("woff2");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: "Geist Mono";
-      src: url("fontes/geist-mono.woff2") format("woff2");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    /* ==========================================================
-       CORES E MEDIDAS
-       A página segue o tema do aparelho: clara de dia, escura
-       se a pessoa usa o modo escuro. Por isso cada cor aparece
-       duas vezes: aqui (tema claro) e logo abaixo (tema escuro).
+       DESIGN TOKENS: use só estes valores no resto do CSS
        ========================================================== */
     :root {
-      --fundo: #f4f4f5;          /* fundo da página */
-      --superficie: #e8e8eb;     /* blocos um pouco mais escuros que o fundo */
-      --texto: #18181b;          /* texto principal */
-      --texto-suave: #52525b;    /* texto secundário */
-      --linha: #d4d4d8;          /* linhas e bordas */
-      --acento: #2f4fcf;         /* o azul do poste de barbeiro (única cor de destaque) */
-      --acento-forte: #2440b3;   /* azul ao passar o mouse */
-      --sobre-acento: #ffffff;   /* texto em cima do azul */
+      /* Cores 60-30-10 (contraste medido, WCAG) */
+      --cor-fundo: #14120F;          /* 60% carvão */
+      --cor-fundo-2: #1D1A16;        /* superfície elevada */
+      --cor-linha: #2A2621;          /* divisórias */
+      --cor-texto: #EDE6D8;          /* 30% osso: 15,1:1 no carvão */
+      --cor-texto-2: #A39C8F;        /* secundário: 6,9:1 no carvão, 6,4:1 no fundo-2 */
+      --cor-destaque: #D9573B;       /* 10% tijolo: 4,8:1 no carvão (só no carvão) */
+      --cor-destaque-forte: #E4664A; /* hover do botão: carvão sobre ele 5,6:1 */
+      --cor-claro: #EDE6D8;          /* faixa clara (osso) */
+      --cor-sobre-claro: #14120F;    /* texto na faixa clara: 15,1:1 */
+      --cor-sobre-claro-2: #4F483F;  /* secundário na faixa clara: 7,3:1 */
+      --cor-veu: rgb(20 18 15 / 0.92);
 
-      --fonte: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      --fonte-numeros: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+      /* Tipografia */
+      --fonte-titulo: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --fonte-texto: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --fs-1: 0.875rem;                                  /* 14 */
+      --fs-2: 1rem;                                      /* 16 */
+      --fs-3: 1.125rem;                                  /* 18 */
+      --fs-4: 1.5rem;                                    /* 24 */
+      --fs-5: clamp(2rem, 1.5rem + 2.4vw, 3rem);         /* 32 a 48 */
+      --fs-6: clamp(2.75rem, 1.6rem + 5.6vw, 5.5rem);    /* 44 a 88 */
+      --fs-7: clamp(3.25rem, 0.5rem + 13.4vw, 10rem);    /* 52 a 160 */
 
-      /* Cantos: tudo usa o mesmo arredondamento */
-      --raio: 12px;
+      /* Espaços: múltiplos de 8 */
+      --e-1: 8px;
+      --e-2: 16px;
+      --e-3: 24px;
+      --e-4: 32px;
+      --e-5: 40px;
+      --e-6: 48px;
+      --e-7: 56px;
+      --e-8: 64px;
+      --e-10: 80px;
+      --e-12: 96px;
+      --e-16: 128px;
 
-      /* Curva das animações: começa rápido e assenta devagar */
-      --curva: cubic-bezier(0.16, 1, 0.3, 1);
+      /* Raios */
+      --raio-1: 2px;
+      --raio-2: 8px;
+
+      /* Sombras */
+      --sombra-1: 0 8px 24px rgb(0 0 0 / 0.35);
+      --sombra-2: 0 16px 48px rgb(0 0 0 / 0.55);
+
+      /* Movimento (CSS; o GSAP usa os mesmos tempos) */
+      --dur-rapida: 0.2s;
+      --curva: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+      /* Layout */
+      --largura: 1280px;
+      --margem: var(--e-2);
+      --alvo-toque: 48px;
+      --tesoura: 144px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --fundo: #111113;
-        --superficie: #1c1c20;
-        --texto: #ededef;
-        --texto-suave: #a1a1aa;
-        --linha: #2e2e34;
-        --acento: #8ea0f5;
-        --acento-forte: #aab8f8;
-        --sobre-acento: #0f1020;
-      }
+    @media (min-width: 768px) {
+      :root { --margem: var(--e-5); --tesoura: 256px; }
     }
 
     /* ==========================================================
-       BASE (vale para a página toda)
+       BASE
        ========================================================== */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      background: var(--fundo);
-      color: var(--texto);
-      font-family: var(--fonte);
-      font-size: 1.0625rem;
-      line-height: 1.6;
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: var(--fonte-texto);
+      font-size: var(--fs-3);
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
 
-    h1,
-    h2,
-    h3,
-    p,
-    figure {
-      margin: 0;
-    }
+    img, svg { display: block; max-width: 100%; }
+    h1, h2, h3, p, ul, ol, figure, address { margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+    address { font-style: normal; }
+    a { color: inherit; }
 
-    h1,
-    h2 {
-      font-weight: 600;
-      line-height: 1.04;
-      letter-spacing: -0.035em;
+    h1, h2, h3 {
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.005em;
       text-wrap: balance;
     }
 
-    h2 {
-      font-size: clamp(2rem, 6vw, 3rem);
-    }
-
-    h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-    }
-
-    p {
-      text-wrap: pretty;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    /* Contorno visível para quem navega pelo teclado */
     :focus-visible {
-      outline: 2px solid var(--acento);
+      outline: 2px solid var(--cor-destaque);
       outline-offset: 3px;
-      border-radius: 4px;
     }
 
-    /* Limita a largura do conteúdo e dá respiro nas laterais */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Esconde a "caixinha" onde os ícones são desenhados */
-    .sprite {
+    .pular {
       position: absolute;
-      width: 0;
-      height: 0;
-      overflow: hidden;
+      min-height: var(--alvo-toque);
+      left: var(--e-2);
+      top: -100px;
+      z-index: 100;
+      padding: var(--e-1) var(--e-2);
+      background: var(--cor-texto);
+      color: var(--cor-fundo);
+    }
+    .pular:focus { top: var(--e-2); }
+
+    .container {
+      width: 100%;
+      max-width: var(--largura);
+      margin-inline: auto;
+      padding-inline: var(--margem);
+    }
+
+    .rotulo {
+      font-family: var(--fonte-titulo);
+      font-weight: 600;
+      font-size: var(--fs-2);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cor-texto-2);
     }
 
     .icone {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    /* Link escondido que aparece ao apertar Tab: pula direto para o conteúdo */
-    .pular {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 20;
-      padding: 10px 16px;
-      border-radius: var(--raio);
-      background: var(--texto);
-      color: var(--fundo);
-      font-weight: 600;
-      transform: translateY(-200%);
-    }
-
-    .pular:focus {
-      transform: none;
-    }
-
-    /* ==========================================================
-       BOTÕES
-       ========================================================== */
+    /* Botão principal: o único elemento vermelho-tijolo de cada seção */
     .botao {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      min-height: 56px;
-      padding: 14px 24px;
-      border: 1px solid var(--acento);
-      border-radius: var(--raio);
-      background: var(--acento);
-      color: var(--sobre-acento);
-      font-size: 1.05rem;
-      font-weight: 600;
+      gap: var(--e-1);
+      min-height: var(--alvo-toque);
+      padding: var(--e-2) var(--e-4);
+      border-radius: var(--raio-1);
+      background: var(--cor-destaque);
+      color: var(--cor-fundo);
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      font-size: var(--fs-4);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       text-decoration: none;
-      white-space: nowrap;
-      transition: transform 0.3s var(--curva), background-color 0.3s var(--curva), border-color 0.3s var(--curva);
+      box-shadow: var(--sombra-1);
+      transition: background-color var(--dur-rapida) var(--curva), transform var(--dur-rapida) var(--curva);
     }
+    .botao:hover { background: var(--cor-destaque-forte); }
+    .botao:active { transform: translateY(1px); }
+    .botao .icone { width: 24px; height: 24px; }
 
-    .botao:hover {
-      border-color: var(--acento-forte);
-      background: var(--acento-forte);
-      transform: translateY(-1px);
-    }
-
-    /* Ao apertar, o botão "afunda" um pouquinho */
-    .botao:active {
-      transform: scale(0.98);
-    }
-
-    /* Botão só com contorno (usado no "Abrir no Google Maps") */
     .botao--contorno {
-      border-color: var(--linha);
       background: transparent;
-      color: var(--texto);
+      color: var(--cor-texto);
+      box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+      font-size: var(--fs-3);
+      padding: var(--e-1) var(--e-3);
     }
+    .botao--contorno:hover { background: var(--cor-fundo-2); box-shadow: inset 0 0 0 2px var(--cor-texto); }
 
-    .botao--contorno:hover {
-      border-color: var(--texto);
-      background: transparent;
-    }
-
-    /* Link de texto com seta */
-    .link-seta {
+    .link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 12px 4px;
+      gap: var(--e-1);
+      min-height: var(--alvo-toque);
       font-weight: 600;
-      text-decoration: none;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 6px;
     }
+    .link:hover { text-decoration-thickness: 2px; }
 
-    .link-seta .icone {
-      width: 18px;
-      height: 18px;
-      transition: transform 0.3s var(--curva);
-    }
+    .secao { padding-block: var(--e-12); }
 
-    .link-seta:hover .icone {
-      transform: translate(2px, -2px);
-    }
-
-    /* ==========================================================
-       BARRA DO TOPO
-       ========================================================== */
-    .barra {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px 24px;
-      min-height: 68px;
-      padding-top: 12px;
-      padding-bottom: 12px;
-    }
-
-    .marca {
-      font-size: 1.1rem;
-      font-weight: 650;
-      letter-spacing: -0.02em;
-      text-decoration: none;
-    }
-
-    /*
-      "Aberto agora / Fechado agora". Começa escondido e o JavaScript
-      mostra, porque sem ele o site não sabe que horas são.
-      A bolinha muda de cor conforme o estado.
-    */
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--texto-suave);
-      font-size: 0.9rem;
-    }
-
-    .status::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--texto-suave);
-    }
-
-    .status[data-estado="aberto"]::before {
-      background: #2f9e5b;
-    }
-
-    .barra__links {
-      display: none;
-      gap: 28px;
-      margin-left: auto;
-    }
-
-    .barra__links a {
-      color: var(--texto-suave);
-      font-size: 0.95rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.3s var(--curva);
-    }
-
-    .barra__links a:hover {
-      color: var(--texto);
-    }
-
-    /* ==========================================================
-       1. ABERTURA (título, botão e foto)
-       ========================================================== */
-    .abertura {
+    .secao__cabeca {
       display: grid;
-      gap: 36px;
-      padding-top: 32px;
-      padding-bottom: 72px;
+      gap: var(--e-2);
+      margin-bottom: var(--e-6);
     }
+    .secao__cabeca h2 { font-size: var(--fs-6); }
+    .secao__cabeca p { max-width: 36ch; color: var(--cor-texto-2); }
 
-    .abertura h1 {
-      font-size: clamp(2.5rem, 9vw, 4rem);
-    }
-
-    /* A palavra "marcada" em azul */
-    .abertura h1 em {
-      color: var(--acento);
-      font-style: normal;
-    }
-
-    .abertura__frase {
-      max-width: 36ch;
-      margin: 20px 0 32px;
-      color: var(--texto-suave);
-      font-size: 1.15rem;
-    }
-
-    .abertura__acoes {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px 24px;
-    }
-
-    /* ==========================================================
-       FOTOS
-       Enquanto a foto não existir na pasta fotos/, aparece um
-       quadro cinza com o nome da foto que falta.
-       ========================================================== */
+    /* Fotos: P&B para unir fotos de origens diferentes */
     .foto {
       position: relative;
       overflow: hidden;
-      border-radius: var(--raio);
-      background: var(--superficie);
+      background: var(--cor-fundo-2);
     }
-
     .foto img {
-      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      filter: grayscale(1) contrast(1.08);
     }
-
-    .foto__vazia {
-      display: none;
+    /* Se a foto não carregar, aparece um quadro com aviso */
+    .foto.sem-foto img { visibility: hidden; }
+    .foto.sem-foto::after {
+      content: "Foto do cliente aqui";
       position: absolute;
       inset: 0;
-      place-content: center;
-      justify-items: center;
-      gap: 10px;
-      padding: 20px;
-      color: var(--texto-suave);
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    .foto__vazia .icone {
-      width: 32px;
-      height: 32px;
-      opacity: 0.7;
-    }
-
-    .foto.sem-foto img {
-      display: none;
-    }
-
-    .foto.sem-foto .foto__vazia {
       display: grid;
-    }
-
-    .foto--atendimento {
-      aspect-ratio: 4 / 3;
+      place-items: center;
+      color: var(--cor-texto-2);
+      font-size: var(--fs-1);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px dashed var(--cor-linha);
     }
 
     /* ==========================================================
-       SEÇÕES (estrutura que se repete nas partes 2, 3 e 4)
+       1. TOPO
        ========================================================== */
-    .secao {
-      padding: 72px 0 88px;
+    .barra {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 20;
+    }
+    .barra__dentro {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--e-2);
+      min-height: var(--e-8);
+    }
+    .marca {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--e-1);
+      min-height: var(--alvo-toque);
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      font-size: var(--fs-4);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .marca .icone { width: 24px; height: 24px; }
+    .barra__links { display: flex; align-items: center; gap: var(--e-3); }
+    .barra__links a:not(.botao) {
+      display: none;
+      align-items: center;
+      min-height: var(--alvo-toque);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .barra__links a:not(.botao):hover { text-decoration: underline; text-underline-offset: 6px; }
+    .barra__links .botao { display: none; }
+    .barra__links a.barra__precos { display: inline-flex; }
+
+    .abertura { position: relative; }
+
+    .abertura__foto {
+      height: 62svh;
+      min-height: 400px;
+      max-height: 640px;
+    }
+    .abertura__foto img {
+      position: absolute;
+      inset: -6% 0 auto;
+      height: 112%;
+    }
+    /* Escurece a base da foto para o título ficar legível por cima */
+    .abertura__foto::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom, rgb(20 18 15 / 0.75) 0%, rgb(20 18 15 / 0) 22%),
+        linear-gradient(to top, var(--cor-fundo) 2%, rgb(20 18 15 / 0) 55%);
+      pointer-events: none;
     }
 
-    .secao h2 {
-      margin-bottom: 40px;
+    .abertura__texto {
+      position: relative;
+      z-index: 2;
+      margin-top: calc(var(--e-16) * -1);
+      padding-bottom: var(--e-10);
     }
+    .abertura__texto .rotulo { margin-bottom: var(--e-2); }
+
+    .abertura h1 {
+      font-size: var(--fs-7);
+      line-height: 0.86;
+    }
+    .abertura h1 span { display: block; }
+
+    .abertura__frase {
+      max-width: 34ch;
+      margin-top: var(--e-3);
+      color: var(--cor-texto-2);
+    }
+    .abertura__frase strong { color: var(--cor-texto); font-weight: 600; }
+
+    .abertura__acoes {
+      display: grid;
+      gap: var(--e-2);
+      margin-top: var(--e-4);
+    }
+    .abertura__acoes .botao { width: 100%; }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: var(--e-1);
+      font-size: var(--fs-2);
+      color: var(--cor-texto-2);
+    }
+    .status[hidden] { display: none; }
+    .status strong { color: var(--cor-texto); font-weight: 600; }
 
     /* ==========================================================
-       2. PREÇOS
+       2. SERVIÇOS E PREÇOS (faixa clara)
        ========================================================== */
     .precos {
-      border-top: 1px solid var(--linha);
+      background: var(--cor-claro);
+      color: var(--cor-sobre-claro);
     }
+    .precos .secao__cabeca p { color: var(--cor-sobre-claro-2); }
+    .precos__grade { display: grid; gap: var(--e-6); }
 
-    .tabela-precos {
+    .cardapio { border-top: 2px solid var(--cor-sobre-claro); }
+    .cardapio li {
       display: grid;
-      gap: 36px;
-      max-width: 760px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
+      gap: var(--e-1);
+      padding-block: var(--e-3);
+      border-bottom: 1px solid var(--cor-sobre-claro-2);
     }
-
-    /* Nome ........ preço (os pontinhos crescem para preencher a linha) */
-    .tabela-precos__linha {
+    .cardapio__linha {
       display: flex;
       align-items: baseline;
-      gap: 14px;
+      gap: var(--e-2);
     }
-
-    .tabela-precos__linha::after {
+    .cardapio__linha::after {
       content: "";
       order: 1;
       flex: 1;
-      min-width: 24px;
-      border-bottom: 2px dotted var(--linha);
-      transform: translateY(-5px);
+      border-bottom: 2px dotted var(--cor-sobre-claro-2);
+      transform: translateY(-6px);
     }
-
-    .tabela-precos h3 {
-      font-size: clamp(1.4rem, 4.5vw, 1.75rem);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-    }
-
-    .preco {
+    .cardapio h3 { font-size: var(--fs-5); }
+    .cardapio .preco {
       order: 2;
-      font-family: var(--fonte-numeros);
-      font-size: clamp(1.4rem, 4.5vw, 1.75rem);
-      font-weight: 500;
-      letter-spacing: -0.03em;
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      font-size: var(--fs-5);
+      line-height: 1;
       white-space: nowrap;
     }
+    .cardapio .preco small { font-size: 0.5em; margin-right: 2px; vertical-align: 0.6em; }
+    .cardapio__linha + p { color: var(--cor-sobre-claro-2); font-size: var(--fs-2); max-width: 40ch; }
 
-    .preco small {
-      margin-right: 4px;
-      color: var(--texto-suave);
-      font-size: 0.55em;
-      font-weight: 400;
-      letter-spacing: 0;
+    /* O destaque da seção: o combo */
+    .combo {
+      position: relative;
+      display: grid;
+      gap: var(--e-3);
+      padding: var(--e-4) var(--e-3);
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      border-radius: var(--raio-1);
+      box-shadow: var(--sombra-2);
     }
-
-    .tabela-precos__descricao {
-      max-width: 52ch;
-      margin-top: 6px;
-      color: var(--texto-suave);
+    .combo .rotulo { color: var(--cor-texto-2); }
+    .combo h3 { font-size: var(--fs-6); }
+    .combo .combo__preco {
+      font-family: var(--fonte-titulo);
+      font-weight: 800;
+      font-size: var(--fs-7);
+      line-height: 0.8;
+      color: var(--cor-texto);
     }
+    .combo .combo__preco small { font-size: 0.32em; vertical-align: 1.4em; margin-right: var(--e-1); }
+    .combo p { color: var(--cor-texto-2); max-width: 34ch; }
+    .combo p strong { color: var(--cor-texto); font-weight: 600; }
+    .combo .botao { width: 100%; }
 
-    /* O combo: preço e observação em azul */
-    .tabela-precos__destaque .preco {
-      color: var(--acento);
+    /* ==========================================================
+       3. COMO FUNCIONA + ASSINATURA (tesoura)
+       ========================================================== */
+    .corte {
+      position: relative;
+      height: calc(var(--tesoura) / 2);
+      margin-block: var(--e-2) var(--e-8);
     }
+    .corte__tracejado,
+    .corte__tapa,
+    .corte__metade {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      margin-top: -1px;
+    }
+    .corte__tracejado {
+      background: repeating-linear-gradient(90deg, var(--cor-texto-2) 0 8px, transparent 8px 16px);
+    }
+    /* Trecho já cortado: tapa o tracejado e mostra as duas metades abertas */
+    .corte__tapa,
+    .corte__metade {
+      right: auto;
+      width: calc(100% - var(--tesoura) * 0.58);
+      transform-origin: left center;
+    }
+    .corte__tapa { height: 16px; margin-top: -8px; background: var(--cor-fundo); }
+    .corte__metade { background: var(--cor-destaque); }
+    .corte__metade--cima { transform: translateY(-4px); }
+    .corte__metade--baixo { transform: translateY(4px); }
 
-    .economia {
-      margin-top: 8px;
-      color: var(--acento);
-      font-size: 0.95rem;
+    .tesoura {
+      position: absolute;
+      top: 0;
+      left: calc(100% - var(--tesoura));
+      width: var(--tesoura);
+      height: auto;
+      overflow: visible;
+      color: var(--cor-texto);
+    }
+    .tesoura path,
+    .tesoura circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .tesoura .tesoura__eixo { fill: currentColor; stroke: none; }
+
+    .passos { display: grid; gap: var(--e-5); counter-reset: passo; }
+    .passos li { display: grid; gap: var(--e-1); max-width: 34ch; }
+    .passos li::before {
+      counter-increment: passo;
+      content: "0" counter(passo);
+      font-family: var(--fonte-titulo);
       font-weight: 600;
+      font-size: var(--fs-4);
+      color: var(--cor-texto-2);
+      letter-spacing: 0.1em;
     }
+    .passos h3 { font-size: var(--fs-5); }
+    .passos p { color: var(--cor-texto-2); }
 
     /* ==========================================================
-       3. COMO FUNCIONA (blocos de tamanhos diferentes)
+       4. GALERIA (mosaico)
        ========================================================== */
-    .blocos {
+    .galeria { background: var(--cor-fundo-2); }
+    .galeria .secao__cabeca p { color: var(--cor-texto-2); }
+
+    .mosaico {
       display: grid;
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 168px;
+      grid-template-areas:
+        "a a"
+        "a a"
+        "b c"
+        "d c"
+        "e e"
+        "f f";
+      gap: var(--e-1);
+    }
+    .mosaico figure { height: 100%; }
+    .mosaico figure:nth-child(1) { grid-area: a; }
+    .mosaico figure:nth-child(2) { grid-area: b; }
+    .mosaico figure:nth-child(3) { grid-area: c; }
+    .mosaico figure:nth-child(4) { grid-area: d; }
+    .mosaico figure:nth-child(5) { grid-area: e; }
+    .mosaico figure:nth-child(6) { grid-area: f; }
+    /* Foto um pouco maior que o quadro: sobra para o efeito de profundidade */
+    .mosaico img {
+      position: absolute;
+      inset: -8% 0;
+      height: 116%;
+      transition: transform 0.6s var(--curva);
+    }
+    .mosaico figcaption {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 1;
+      padding: var(--e-1) var(--e-2);
+      background: var(--cor-veu);
+      font-family: var(--fonte-titulo);
+      font-weight: 600;
+      font-size: var(--fs-2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    .bloco {
-      display: grid;
-      align-content: start;
-      gap: 10px;
-      padding: 28px;
-      border-radius: var(--raio);
-      background: var(--superficie);
+    .galeria__rodape {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--e-2);
+      margin-top: var(--e-4);
+      color: var(--cor-texto-2);
     }
-
-    .bloco p {
-      color: var(--texto-suave);
-    }
-
-    /* O bloco principal, em azul */
-    .bloco--principal {
-      align-content: end;
-      min-height: 280px;
-      background: var(--acento);
-      color: var(--sobre-acento);
-    }
-
-    .bloco--principal h3 {
-      font-size: clamp(1.8rem, 5vw, 2.6rem);
-      letter-spacing: -0.035em;
-      line-height: 1.05;
-    }
-
-    .bloco--principal p {
-      max-width: 30ch;
-      color: var(--sobre-acento);
-      font-size: 1.1rem;
-      opacity: 0.88;
-    }
-
-    /* O bloco com foto: a foto ocupa a parte de cima */
-    .bloco--foto {
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .bloco--foto .foto {
-      aspect-ratio: 16 / 9;
-      border-radius: 0;
-    }
-
-    .bloco--foto .bloco__texto {
-      display: grid;
-      gap: 10px;
-      padding: 0 28px 28px;
-    }
+    .galeria__rodape .link { color: var(--cor-texto); }
 
     /* ==========================================================
-       4. ONDE FICA (horário, endereço e mapa)
+       5. ONDE FICA (horário + mapa)
        ========================================================== */
-    .local {
-      background: var(--superficie);
-    }
-
-    .local__grade {
-      display: grid;
-      gap: 40px;
-    }
-
-    .local__info {
-      display: grid;
-      align-content: start;
-      gap: 40px;
-    }
-
+    .local__grade { display: grid; gap: var(--e-6); }
+    .local__info { display: grid; gap: var(--e-5); align-content: start; }
     .local h3 {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: var(--e-1);
+      margin-bottom: var(--e-2);
+      font-size: var(--fs-4);
+      letter-spacing: 0.04em;
     }
-
-    .local h3 .icone {
-      color: var(--acento);
-    }
-
-    .horarios {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
+    .local h3 .icone { color: var(--cor-texto-2); }
 
     .horarios li {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--linha);
+      gap: var(--e-2);
+      padding-block: var(--e-2);
+      border-bottom: 1px solid var(--cor-linha);
+      color: var(--cor-texto-2);
     }
-
-    .horarios li:last-child {
-      border-bottom: 0;
-    }
-
-    .horarios span {
-      color: var(--texto-suave);
-    }
-
-    .horarios strong {
-      font-weight: 500;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    /* Linha do dia de hoje (o JavaScript marca qual é) */
-    .horarios li.hoje span {
-      color: var(--texto);
-      font-weight: 600;
-    }
-
+    .horarios li strong { color: var(--cor-texto); font-weight: 600; }
+    /* A linha de hoje (marcada pelo JavaScript) */
+    .horarios li.hoje { color: var(--cor-texto); font-weight: 600; }
     .horarios li.hoje span::after {
-      content: " (hoje)";
-      color: var(--acento);
+      content: "hoje";
+      margin-left: var(--e-1);
+      padding: 2px var(--e-1);
+      border: 1px solid var(--cor-texto-2);
+      border-radius: var(--raio-1);
+      font-size: var(--fs-1);
       font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      vertical-align: 2px;
     }
 
-    address {
-      font-size: 1.25rem;
-      font-style: normal;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-
-    .referencia {
-      margin: 8px 0 24px;
-      color: var(--texto-suave);
-    }
+    .local address { font-size: var(--fs-4); line-height: 1.35; }
+    .local__referencia { margin-top: var(--e-1); color: var(--cor-texto-2); font-size: var(--fs-2); }
+    .local__info .botao--contorno { margin-top: var(--e-3); }
 
     .mapa {
-      display: block;
       width: 100%;
-      height: 340px;
+      aspect-ratio: 4 / 5;
       border: 0;
-      border-radius: var(--raio);
-      background: var(--fundo);
+      border-radius: var(--raio-1);
+      background: var(--cor-fundo-2);
+      /* Mapa em tons escuros para combinar com a página. Para o mapa colorido, apague esta linha. */
+      filter: grayscale(1) invert(0.9) contrast(0.9);
     }
 
     /* ==========================================================
-       5. RODAPÉ
+       6. CHAMADA FINAL
+       ========================================================== */
+    .final { border-top: 1px solid var(--cor-linha); }
+    .final__dentro { display: grid; gap: var(--e-4); }
+    .final h2 { font-size: var(--fs-7); line-height: 0.86; }
+    .final__dentro > div { display: grid; gap: var(--e-3); justify-items: start; }
+    .final p { max-width: 36ch; color: var(--cor-texto-2); }
+    .final .botao { width: 100%; justify-self: stretch; }
+
+    /* ==========================================================
+       7. RODAPÉ
        ========================================================== */
     .rodape {
-      padding: 48px 0 120px; /* espaço extra embaixo para o botão flutuante não cobrir o texto */
-      border-top: 1px solid var(--linha);
+      padding-block: var(--e-6) calc(var(--e-12) + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--cor-linha);
+      background: var(--cor-fundo-2);
+      color: var(--cor-texto-2);
+      font-size: var(--fs-2);
     }
-
-    .rodape__grade {
-      display: grid;
-      gap: 28px;
-    }
-
-    .rodape__endereco {
-      margin-top: 4px;
-      color: var(--texto-suave);
-    }
-
-    .rodape__links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .rodape__links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 48px;
-      padding: 10px 18px;
-      border: 1px solid var(--linha);
-      border-radius: var(--raio);
-      font-weight: 500;
-      text-decoration: none;
-      transition: border-color 0.3s var(--curva);
-    }
-
-    .rodape__links a:hover {
-      border-color: var(--texto);
-    }
-
-    .rodape__aviso {
-      color: var(--texto-suave);
-      font-size: 0.85rem;
-    }
+    .rodape__grade { display: grid; gap: var(--e-3); }
+    .rodape .marca { color: var(--cor-texto); }
+    .rodape__links { display: flex; flex-wrap: wrap; gap: var(--e-1) var(--e-4); }
+    .rodape__links a { display: inline-flex; align-items: center; gap: var(--e-1); min-height: var(--alvo-toque); color: var(--cor-texto); text-decoration: none; }
+    .rodape__links a:hover { text-decoration: underline; text-underline-offset: 6px; }
 
     /* ==========================================================
-       BOTÃO FLUTUANTE DO WHATSAPP (fica fixo no canto da tela)
+       BARRA FIXA DO WHATSAPP (celular)
+       Sempre visível no celular: some só enquanto outro botão
+       de agendar já está na tela.
        ========================================================== */
-    .whatsapp-flutuante {
+    .barra-whats {
       position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 10;
-      display: grid;
-      place-items: center;
-      width: 60px;
-      height: 60px;
-      border-radius: var(--raio);
-      background: var(--acento);
-      color: var(--sobre-acento);
-      box-shadow: 0 10px 28px -8px rgba(36, 64, 179, 0.55);
-      transition: transform 0.3s var(--curva), background-color 0.3s var(--curva);
+      inset: auto 0 0;
+      z-index: 50;
+      padding: var(--e-1) var(--margem) calc(var(--e-1) + env(safe-area-inset-bottom));
+      background: var(--cor-fundo);
+      border-top: 1px solid var(--cor-linha);
+      transition: transform 0.4s var(--curva), opacity 0.4s var(--curva);
     }
-
-    .whatsapp-flutuante:hover {
-      background: var(--acento-forte);
-      transform: translateY(-2px);
-    }
-
-    .whatsapp-flutuante:active {
-      transform: scale(0.96);
-    }
-
-    .whatsapp-flutuante .icone {
-      width: 30px;
-      height: 30px;
-    }
-
-    /* ==========================================================
-       ANIMAÇÕES DE ENTRADA
-       Só acontecem se a pessoa não pediu para reduzir animações
-       no aparelho. Sem JavaScript, tudo aparece normalmente.
-       ========================================================== */
-    @media (prefers-reduced-motion: no-preference) {
-      /* Abertura: os elementos sobem um depois do outro ao carregar */
-      .entra {
-        animation: subir 0.9s var(--curva) both;
-        animation-delay: calc(var(--ordem, 0) * 90ms);
-      }
-
-      @keyframes subir {
-        from {
-          opacity: 0;
-          transform: translateY(18px);
-        }
-      }
-
-      /* Seções: sobem ao aparecer na tela (o JavaScript adiciona .visivel) */
-      .js .revela {
-        opacity: 0;
-        transform: translateY(28px);
-        transition: opacity 0.9s var(--curva), transform 0.9s var(--curva);
-      }
-
-      .js .revela.visivel {
-        opacity: 1;
-        transform: none;
-      }
-    }
+    .barra-whats .botao { width: 100%; font-size: var(--fs-4); box-shadow: none; }
+    .barra-whats.recolhida { transform: translateY(100%); opacity: 0; pointer-events: none; }
 
     /* ==========================================================
        TELAS MAIORES
-       Todo o CSS acima foi pensado primeiro para o celular;
-       aqui só ajustamos o que muda quando sobra espaço.
        ========================================================== */
-    @media (min-width: 640px) {
-      .barra__links {
-        display: flex;
+    @media (min-width: 768px) {
+      .secao { padding-block: var(--e-16); }
+      .abertura__acoes { grid-template-columns: auto 1fr; align-items: center; gap: var(--e-4); }
+      .abertura__acoes .botao,
+      .combo .botao,
+      .final .botao { width: auto; justify-self: start; }
+      .mosaico {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 232px;
+        grid-template-areas:
+          "a a b c"
+          "a a d c"
+          "e e f f";
+        gap: var(--e-2);
       }
+      .passos { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto auto; gap: var(--e-1) var(--e-4); }
+      .passos li { grid-row: span 3; grid-template-rows: subgrid; padding-left: var(--e-3); border-left: 1px solid var(--cor-linha); }
+      .botao { white-space: nowrap; }
+      .mapa { aspect-ratio: 16 / 10; }
+      .combo { padding: var(--e-6); }
     }
 
-    @media (min-width: 900px) {
-      .secao {
-        padding: 112px 0 128px;
+    @media (min-width: 1024px) {
+      .barra {
+        position: sticky;
+        top: 0;
+        background: var(--cor-fundo);
+        border-bottom: 1px solid var(--cor-linha);
       }
+      .barra__links a:not(.botao) { display: inline-flex; }
+      .barra__links .botao { display: inline-flex; font-size: var(--fs-3); padding: var(--e-1) var(--e-3); box-shadow: none; }
+      .barra-whats { display: none; }
+      .rodape { padding-bottom: var(--e-6); }
 
-      .secao h2 {
-        margin-bottom: 56px;
-      }
-
-      /* Texto à esquerda, foto à direita */
+      /* Topo: título por cima da borda da foto, foto até a borda da tela */
       .abertura {
-        grid-template-columns: 1.1fr 0.9fr;
-        align-items: center;
-        gap: 64px;
-        padding-top: 48px;
-        padding-bottom: 112px;
+        display: grid;
+        grid-template-columns: minmax(var(--margem), 1fr) minmax(0, calc(var(--largura) - var(--margem) * 2)) minmax(var(--margem), 1fr);
+        min-height: calc(100svh - var(--e-8));
       }
+      .abertura__foto {
+        grid-column: 2 / 4;
+        grid-row: 1;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        margin-left: 38%;
+      }
+      .abertura__foto::before {
+        background:
+          linear-gradient(to right, var(--cor-fundo) 0%, rgb(20 18 15 / 0.55) 40%, rgb(20 18 15 / 0) 75%),
+          linear-gradient(to top, rgb(20 18 15 / 0.7) 0%, rgb(20 18 15 / 0) 45%);
+      }
+      .abertura__texto {
+        grid-column: 2 / 3;
+        grid-row: 1;
+        align-self: end;
+        margin: 0;
+        padding: var(--e-12) 0 var(--e-10);
+      }
+      .abertura__frase { font-size: var(--fs-4); line-height: 1.4; }
 
-      .foto--atendimento {
-        aspect-ratio: 4 / 5;
-        max-height: 620px;
-      }
+      .secao__cabeca { grid-template-columns: 7fr 5fr; align-items: end; gap: var(--e-6); }
+      .secao__cabeca p { justify-self: end; }
 
-      /* Bloco azul alto à esquerda, dois blocos empilhados à direita */
-      .blocos {
-        grid-template-columns: 1.25fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 16px;
-      }
+      .precos__grade { grid-template-columns: 6fr 5fr; gap: var(--e-10); align-items: start; }
+      .precos .secao__cabeca { grid-template-columns: 1fr; gap: var(--e-3); }
+      .precos .secao__cabeca p { justify-self: start; }
+      .combo { margin-top: calc(var(--e-12) * -1); }
 
-      .bloco--principal {
-        grid-row: span 2;
-        min-height: 460px;
-        padding: 40px;
-      }
+      .local__grade { grid-template-columns: 5fr 7fr; gap: var(--e-8); }
+      .mapa { aspect-ratio: auto; height: 100%; min-height: 480px; }
 
-      /* Horário e endereço à esquerda, mapa à direita */
-      .local__grade {
-        grid-template-columns: 1fr 1.4fr;
-        gap: 56px;
-      }
-
-      .mapa {
-        height: 100%;
-        min-height: 460px;
-      }
-
-      .rodape__grade {
-        grid-template-columns: 1fr auto;
-        align-items: center;
-      }
-
-      .rodape__aviso {
-        grid-column: 1 / -1;
-      }
-
-      .whatsapp-flutuante {
-        right: 28px;
-        bottom: 28px;
-      }
+      .rodape__grade { grid-template-columns: 1fr auto; align-items: center; }
+      .rodape__aviso { grid-column: 1 / -1; }
     }
 
-    /* Para quem configurou o aparelho para reduzir animações */
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
+    @media (min-width: 1280px) {
+      .final__dentro { grid-template-columns: 1fr auto; align-items: end; gap: var(--e-8); }
+    }
 
-      .botao,
-      .link-seta .icone,
-      .whatsapp-flutuante {
-        transition: none;
-      }
+    @media (hover: hover) {
+      .mosaico figure:hover img { transform: scale(1.04); }
+    }
+
+    /* Antes do GSAP assumir: esconde só o que vai animar (sem pulo de tela) */
+    .anima [data-entra],
+    .anima [data-revela] { opacity: 0; }
+
+    /* Movimento reduzido: nada se mexe, tudo aparece pronto */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     }
   </style>
 </head>
-<body>
 
+<body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-  <!-- Ícones (família Phosphor, licença MIT): desenhados uma vez aqui e reutilizados com <use> -->
-  <svg class="sprite" aria-hidden="true">
-    <symbol id="icone-whatsapp" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/>
-    </symbol>
-    <symbol id="icone-instagram" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/>
-    </symbol>
-    <symbol id="icone-local" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/>
-    </symbol>
-    <symbol id="icone-relogio" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/>
-    </symbol>
-    <symbol id="icone-seta" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/>
-    </symbol>
-    <symbol id="icone-camera" viewBox="0 0 256 256">
-      <path fill="currentColor" d="M208,56H180.28L166.65,35.56A8,8,0,0,0,160,32H96a8,8,0,0,0-6.65,3.56L75.71,56H48A24,24,0,0,0,24,80V192a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V80A24,24,0,0,0,208,56Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H80a8,8,0,0,0,6.66-3.56L100.28,48h55.43l13.63,20.44A8,8,0,0,0,176,72h32a8,8,0,0,1,8,8ZM128,88a44,44,0,1,0,44,44A44.05,44.05,0,0,0,128,88Zm0,72a28,28,0,1,1,28-28A28,28,0,0,1,128,160Z"/>
-    </symbol>
+  <!-- Ícones Lucide (SVG). Cada ícone é usado com <svg class="icone"><use href="#..."></svg> -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-mensagem" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></symbol>
+    <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-local" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-tesoura" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></symbol>
+    <symbol id="i-rota" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></symbol>
   </svg>
 
   <!-- ====================== 1. TOPO ====================== -->
-  <header>
-    <div class="container barra">
-      <a class="marca" href="#">Barbearia Modelo</a>
-      <!-- Preenchido pelo JavaScript no final da página (não precisa mexer) -->
-      <p class="status" id="status" hidden></p>
+  <header class="barra">
+    <div class="container barra__dentro">
+      <a class="marca" href="#">
+        <svg class="icone" aria-hidden="true"><use href="#i-tesoura"></use></svg>
+        Barbearia Modelo
+      </a>
       <nav class="barra__links" aria-label="Seções da página">
-        <a href="#servicos">Preços</a>
-        <a href="#local">Endereço</a>
+        <a class="barra__precos" href="#precos">Preços</a>
+        <a href="#cortes">Cortes</a>
+        <a href="#local">Onde fica</a>
+        <!-- TROCAR: número do WhatsApp (55 + DDD + número, só dígitos) -->
+        <a class="botao" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">Agendar</a>
       </nav>
-    </div>
-
-    <div class="container abertura">
-      <div>
-        <h1 class="entra">Corte e barba com hora <em>marcada</em>.</h1>
-        <p class="abertura__frase entra" style="--ordem: 1">Escolha o horário pelo WhatsApp e seja atendido na hora combinada, no Centro de Teresina.</p>
-
-        <div class="abertura__acoes entra" style="--ordem: 2">
-          <!--
-            TROQUE AQUI: WhatsApp (1 de 3)
-            5586999999999 = 55 (Brasil) + 86 (DDD) + número. Só números: sem +, espaço ou traço.
-            Depois de "?text=" vem a mensagem pronta "Olá! Quero agendar um horário."
-            escrita em formato de link (%20 = espaço, %C3%A1 = á, %21 = !).
-          -->
-          <a class="botao" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
-            <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
-            Agendar pelo WhatsApp
-          </a>
-          <a class="link-seta" href="#servicos">
-            Ver preços
-            <svg class="icone" aria-hidden="true"><use href="#icone-seta"></use></svg>
-          </a>
-        </div>
-      </div>
-
-      <!--
-        TROQUE AQUI: Fotos (1 de 2)
-        Coloque na pasta fotos/ uma foto vertical do barbeiro atendendo
-        com o nome atendimento.jpg (de preferência 1200 x 1500 pixels).
-        Se for outra foto, ajuste também o texto do alt="...": ele é lido
-        para pessoas cegas e aparece no Google Imagens.
-      -->
-      <figure class="foto foto--atendimento entra" style="--ordem: 3">
-        <img src="fotos/atendimento.jpg" alt="Barbeiro fazendo o acabamento de um degradê na navalha" width="1200" height="1500" fetchpriority="high">
-        <figcaption class="foto__vazia">
-          <svg class="icone" aria-hidden="true"><use href="#icone-camera"></use></svg>
-          Foto do atendimento
-        </figcaption>
-      </figure>
     </div>
   </header>
 
   <main id="conteudo">
+    <section class="abertura" aria-labelledby="titulo-topo">
+      <!--
+        TROCAR POR FOTO DO CLIENTE (1 de 6)
+        Foto do barbeiro atendendo. Coloque o arquivo na pasta fotos/
+        (ex.: fotos/atendimento.jpg) e troque o src e o srcset abaixo.
+        Placeholder: Unsplash, foto de Hair Spies (ydd_DCROCTA).
+      -->
+      <figure class="foto abertura__foto" data-entra="foto">
+        <img
+          src="https://unsplash.com/photos/ydd_DCROCTA/download?force=true&w=1600"
+          srcset="https://unsplash.com/photos/ydd_DCROCTA/download?force=true&w=800 800w,
+                  https://unsplash.com/photos/ydd_DCROCTA/download?force=true&w=1600 1600w"
+          sizes="(min-width: 1024px) 60vw, 100vw"
+          alt="Barbeiro cortando o cabelo de um cliente na cadeira"
+          width="1600" height="1067" fetchpriority="high">
+      </figure>
 
-    <!-- ====================== 2. PREÇOS ====================== -->
-    <section class="secao precos" id="servicos" aria-labelledby="titulo-servicos">
-      <div class="container revela">
-        <h2 id="titulo-servicos">Preços</h2>
+      <div class="container abertura__texto">
+        <p class="rotulo" data-entra>Barbearia no Centro de Teresina</p>
+        <h1 id="titulo-topo" data-entra><span>Corte bom.</span> <span>Hora marcada.</span></h1>
+        <p class="abertura__frase" data-entra>Você escolhe o horário pelo WhatsApp e senta na cadeira na hora combinada. <strong>Sem fila e sem esperar.</strong></p>
 
-        <!-- TROQUE AQUI: os preços são de exemplo. Se mudar, ajuste também a economia do combo. -->
-        <ul class="tabela-precos">
-          <li>
-            <div class="tabela-precos__linha">
-              <h3>Corte</h3>
-              <p class="preco"><small>R$</small>40</p>
-            </div>
-            <p class="tabela-precos__descricao">Máquina ou tesoura, do social ao degradê, com acabamento na navalha.</p>
-          </li>
-
-          <li>
-            <div class="tabela-precos__linha">
-              <h3>Barba</h3>
-              <p class="preco"><small>R$</small>30</p>
-            </div>
-            <p class="tabela-precos__descricao">Modelagem na navalha, toalha quente e finalização com balm.</p>
-          </li>
-
-          <li class="tabela-precos__destaque">
-            <div class="tabela-precos__linha">
-              <h3>Corte e barba</h3>
-              <p class="preco"><small>R$</small>60</p>
-            </div>
-            <p class="tabela-precos__descricao">Os dois serviços na mesma visita.</p>
-            <p class="economia">R$ 10 a menos do que pagar separado</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ====================== 3. COMO FUNCIONA ====================== -->
-    <section class="secao" id="diferenciais" aria-labelledby="titulo-diferenciais">
-      <div class="container revela">
-        <h2 id="titulo-diferenciais">Como funciona o atendimento</h2>
-
-        <div class="blocos">
-          <article class="bloco bloco--principal">
-            <h3>Hora marcada</h3>
-            <p>Você agenda pelo WhatsApp e é atendido no horário combinado.</p>
-          </article>
-
-          <article class="bloco">
-            <h3>Conversa antes do corte</h3>
-            <p>Antes de começar, o barbeiro pergunta o estilo que você quer e diz o que combina com o seu cabelo.</p>
-          </article>
-
-          <article class="bloco bloco--foto">
-            <!--
-              TROQUE AQUI: Fotos (2 de 2)
-              Foto horizontal do salão com o nome ambiente.jpg
-              (de preferência 1600 x 900 pixels). Ajuste o alt="..." se precisar.
-            -->
-            <figure class="foto">
-              <img src="fotos/ambiente.jpg" alt="Cadeiras e espelhos do salão da barbearia" width="1600" height="900" loading="lazy">
-              <figcaption class="foto__vazia">
-                <svg class="icone" aria-hidden="true"><use href="#icone-camera"></use></svg>
-                Foto do salão
-              </figcaption>
-            </figure>
-            <div class="bloco__texto">
-              <h3>Ambiente climatizado</h3>
-              <p>Ar-condicionado e um cafezinho enquanto você espera. Afinal, aqui é Teresina.</p>
-            </div>
-          </article>
+        <div class="abertura__acoes" data-entra>
+          <!-- TROCAR: número do WhatsApp -->
+          <a class="botao" data-cta href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+            <svg class="icone" aria-hidden="true"><use href="#i-mensagem"></use></svg>
+            Agendar pelo WhatsApp
+          </a>
+          <!-- Preenchido pelo JavaScript a partir da lista de horários (seção "Onde fica") -->
+          <p class="status" id="status" hidden>
+            <svg class="icone" aria-hidden="true"><use href="#i-relogio"></use></svg>
+            <span></span>
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- ====================== 4. ONDE FICA ====================== -->
+    <!-- ====================== 2. SERVIÇOS E PREÇOS ====================== -->
+    <section class="secao precos" id="precos" aria-labelledby="titulo-precos">
+      <div class="container precos__grade">
+        <div>
+          <div class="secao__cabeca" data-revela>
+            <h2 id="titulo-precos">Serviços e preços</h2>
+            <p>Do social ao degradê. Diga no WhatsApp o que você quer fazer e a gente reserva o tempo certo.</p>
+          </div>
+
+          <!-- TROCAR: preços de exemplo. Se mudar, ajuste também a economia do combo. -->
+          <ul class="cardapio">
+            <li data-revela>
+              <div class="cardapio__linha">
+                <h3>Corte</h3>
+                <p class="preco"><small>R$</small>40</p>
+              </div>
+              <p>Máquina ou tesoura, com acabamento na navalha.</p>
+            </li>
+            <li data-revela>
+              <div class="cardapio__linha">
+                <h3>Barba</h3>
+                <p class="preco"><small>R$</small>30</p>
+              </div>
+              <p>Modelagem na navalha, toalha quente e balm no final.</p>
+            </li>
+          </ul>
+        </div>
+
+        <article class="combo" data-revela aria-labelledby="titulo-combo">
+          <p class="rotulo">Combo</p>
+          <h3 id="titulo-combo">Corte + barba</h3>
+          <p class="combo__preco"><small>R$</small>60</p>
+          <p>Os dois na mesma visita. <strong>R$ 10 a menos</strong> do que fazer separado.</p>
+          <!-- TROCAR: número do WhatsApp -->
+          <a class="botao" data-cta href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20corte%20e%20barba." target="_blank" rel="noopener">
+            <svg class="icone" aria-hidden="true"><use href="#i-mensagem"></use></svg>
+            Agendar o combo
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================== 3. COMO FUNCIONA (assinatura: tesoura) ====================== -->
+    <section class="secao" id="como-funciona" aria-labelledby="titulo-como">
+      <div class="container">
+        <div class="secao__cabeca" data-revela>
+          <h2 id="titulo-como">Marcou, sentou, cortou.</h2>
+          <p>Três passos entre a mensagem e o espelho.</p>
+        </div>
+
+        <!-- Animação de assinatura: a tesoura se desenha e corta a linha tracejada -->
+        <div class="corte" aria-hidden="true">
+          <div class="corte__tracejado"></div>
+          <div class="corte__tapa"></div>
+          <div class="corte__metade corte__metade--cima"></div>
+          <div class="corte__metade corte__metade--baixo"></div>
+          <svg class="tesoura" viewBox="0 0 240 120" focusable="false">
+            <!-- Metade A: lâmina de cima + argola de baixo -->
+            <g class="tesoura__a">
+              <path class="tesoura__lamina" d="M84 60 L234 60 C210 48 156 36 106 42 C94 44 86 52 84 60 Z"/>
+              <path d="M100 60 C84 66 70 76 62 84"/>
+              <circle cx="42" cy="96" r="22"/>
+            </g>
+            <!-- Metade B: lâmina de baixo + argola de cima -->
+            <g class="tesoura__b">
+              <path class="tesoura__lamina" d="M84 60 L234 60 C210 72 156 84 106 78 C94 76 86 68 84 60 Z"/>
+              <path d="M100 60 C84 54 70 44 62 36"/>
+              <circle cx="42" cy="24" r="22"/>
+            </g>
+            <circle class="tesoura__eixo" cx="100" cy="60" r="4"/>
+          </svg>
+        </div>
+
+        <ol class="passos">
+          <li data-revela>
+            <h3>Chame no WhatsApp</h3>
+            <p>Diga o serviço e o dia que fica melhor para você.</p>
+          </li>
+          <li data-revela>
+            <h3>Escolha o horário</h3>
+            <p>A gente manda os horários livres e reserva o seu.</p>
+          </li>
+          <li data-revela>
+            <h3>Chegue e sente</h3>
+            <p>Na hora marcada, é a sua vez. Antes de começar, o barbeiro confirma o corte com você.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ====================== 4. GALERIA DE CORTES ====================== -->
+    <section class="secao galeria" id="cortes" aria-labelledby="titulo-cortes">
+      <div class="container">
+        <div class="secao__cabeca" data-revela>
+          <h2 id="titulo-cortes">Cortes da casa</h2>
+          <p>Tem uma foto de referência? Mande junto com o agendamento e o barbeiro diz se combina com o seu cabelo.</p>
+        </div>
+
+        <!--
+          TROCAR POR FOTO DO CLIENTE (2 a 6 de 6)
+          Use fotos reais de cortes feitos na barbearia. Coloque os arquivos
+          na pasta fotos/ e troque cada src. Ajuste também o alt e a legenda.
+          Placeholders do Unsplash (código da foto no link).
+        -->
+        <div class="mosaico">
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash, Redd Francisco (PDDvMlScofU) -->
+            <img src="https://unsplash.com/photos/PDDvMlScofU/download?force=true&w=1200" alt="Barbeiro fazendo o acabamento de um corte masculino" width="1200" height="1200" loading="lazy">
+            <figcaption>Degradê</figcaption>
+          </figure>
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash (I2qtMgu8IJA) -->
+            <img src="https://unsplash.com/photos/I2qtMgu8IJA/download?force=true&w=800" alt="Barbeiro aparando a barba de um cliente" width="800" height="600" loading="lazy">
+            <figcaption>Barba</figcaption>
+          </figure>
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash, Tahir Osman (codY8UmLlu0) -->
+            <img src="https://unsplash.com/photos/codY8UmLlu0/download?force=true&w=800" alt="Barbeiro cortando o cabelo de um cliente na tesoura" width="800" height="1200" loading="lazy">
+            <figcaption>Tesoura</figcaption>
+          </figure>
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash, Tahir Osman (eu5PNM_ULTg) -->
+            <img src="https://unsplash.com/photos/eu5PNM_ULTg/download?force=true&w=800" alt="Ferramentas de barbeiro sobre a bancada" width="800" height="600" loading="lazy">
+            <figcaption>Ferramentas</figcaption>
+          </figure>
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash, Redd Francisco (BBGyxhtPpC0) -->
+            <img src="https://unsplash.com/photos/BBGyxhtPpC0/download?force=true&w=1200" alt="Cadeira de barbeiro em frente ao espelho" width="1200" height="600" loading="lazy">
+            <figcaption>A cadeira</figcaption>
+          </figure>
+          <figure class="foto">
+            <!-- TROCAR POR FOTO DO CLIENTE: Unsplash, Tahir Osman (1u_vA8e9cmo) -->
+            <img src="https://unsplash.com/photos/1u_vA8e9cmo/download?force=true&w=1200" alt="Caixa de madeira com várias tesouras de corte" width="1200" height="600" loading="lazy">
+            <figcaption>Tesouras</figcaption>
+          </figure>
+        </div>
+
+        <div class="galeria__rodape" data-revela>
+          <p>Quer ver mais antes de marcar?</p>
+          <!-- TROCAR: link do Instagram do cliente -->
+          <a class="link" href="https://www.instagram.com/" target="_blank" rel="noopener">
+            <svg class="icone" aria-hidden="true"><use href="#i-camera"></use></svg>
+            Ver no Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== 5. ONDE FICA ====================== -->
     <section class="secao local" id="local" aria-labelledby="titulo-local">
-      <div class="container revela">
-        <h2 id="titulo-local">Onde fica</h2>
+      <div class="container">
+        <div class="secao__cabeca" data-revela>
+          <h2 id="titulo-local">Onde fica</h2>
+          <p>No Centro de Teresina. Abra no Google Maps e veja a rota até a porta.</p>
+        </div>
 
         <div class="local__grade">
-          <div class="local__info">
+          <div class="local__info" data-revela>
             <!--
-              TROQUE AQUI: horários de exemplo.
-              Além do texto, ajuste os "data-" de cada linha. É deles que sai o "Aberto agora" do topo:
-                data-dias  = dias da semana (0 = domingo, 1 = segunda ... 6 = sábado), separados por vírgula
-                data-abre  = hora que abre   (ex.: 9 ou 8:30)
-                data-fecha = hora que fecha  (ex.: 19 ou 18:30)
-              Dia fechado: deixe só o data-dias, sem data-abre e data-fecha.
+              TROCAR: horários de exemplo.
+              Além do texto, ajuste os "data-" de cada linha. Deles sai o "Aberto agora" do topo.
+                data-dias  = dias da semana (0 = domingo, 1 = segunda ... 6 = sábado)
+                data-abre  = hora que abre  (ex.: 9 ou 8:30)
+                data-fecha = hora que fecha (ex.: 19 ou 18:30)
+              Dia fechado: deixe só o data-dias.
             -->
             <div>
-              <h3><svg class="icone" aria-hidden="true"><use href="#icone-relogio"></use></svg> Horário</h3>
+              <h3><svg class="icone" aria-hidden="true"><use href="#i-relogio"></use></svg> Horário</h3>
               <ul class="horarios" id="horarios">
                 <li data-dias="1,2,3,4,5" data-abre="9" data-fecha="19"><span>Segunda a sexta</span> <strong>9h às 19h</strong></li>
                 <li data-dias="6" data-abre="8" data-fecha="16"><span>Sábado</span> <strong>8h às 16h</strong></li>
@@ -1028,26 +1002,25 @@
               </ul>
             </div>
 
-            <!-- TROQUE AQUI: endereço genérico de exemplo (aparece também no rodapé) -->
             <div>
-              <h3><svg class="icone" aria-hidden="true"><use href="#icone-local"></use></svg> Endereço</h3>
-              <address>
-                Rua Exemplo, 123, Centro<br>
-                Teresina-PI
-              </address>
-              <p class="referencia">Ponto de referência: [TEXTO DE EXEMPLO]</p>
-              <!-- TROQUE AQUI: depois de "query=" vai o endereço do cliente (use + no lugar dos espaços) -->
-              <a class="botao botao--contorno" href="https://www.google.com/maps/search/?api=1&query=Centro,+Teresina+-+PI" target="_blank" rel="noopener">Abrir no Google Maps</a>
+              <h3><svg class="icone" aria-hidden="true"><use href="#i-local"></use></svg> Endereço</h3>
+              <!-- TROCAR: endereço de exemplo (aparece também no rodapé) -->
+              <address>Rua Exemplo, 123, Centro<br>Teresina-PI</address>
+              <p class="local__referencia">Ponto de referência: [TROCAR]</p>
+              <!-- TROCAR: depois de "query=" vai o endereço do cliente (+ no lugar dos espaços) -->
+              <a class="botao botao--contorno" href="https://www.google.com/maps/search/?api=1&query=Centro,+Teresina+-+PI" target="_blank" rel="noopener">
+                <svg class="icone" aria-hidden="true"><use href="#i-rota"></use></svg>
+                Abrir no Google Maps
+              </a>
             </div>
           </div>
 
           <!--
-            TROQUE AQUI: Mapa
-            Jeito mais fácil: troque o texto depois de "q=" pelo endereço do cliente (use + no lugar dos espaços).
-            Outro jeito: no Google Maps, busque o endereço > Compartilhar > Incorporar um mapa,
-            copie o link que está dentro de src="..." e cole no lugar do link abaixo.
+            TROCAR: mapa
+            Troque o texto depois de "q=" pelo endereço do cliente (+ no lugar dos espaços).
+            Ou: Google Maps > Compartilhar > Incorporar um mapa > copie o link de src="...".
           -->
-          <iframe class="mapa"
+          <iframe class="mapa" data-revela
             title="Mapa do Centro de Teresina-PI"
             src="https://maps.google.com/maps?q=Centro,+Teresina+-+PI&hl=pt-BR&z=15&output=embed"
             loading="lazy"
@@ -1057,105 +1030,102 @@
       </div>
     </section>
 
+    <!-- ====================== 6. CHAMADA FINAL ====================== -->
+    <section class="secao final" aria-labelledby="titulo-final">
+      <div class="container final__dentro">
+        <h2 id="titulo-final" data-revela>Sua vez na cadeira.</h2>
+        <div data-revela>
+          <p>Mande uma mensagem, escolha o horário e chegue só na hora.</p>
+          <!-- TROCAR: número do WhatsApp -->
+          <a class="botao" data-cta href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+            <svg class="icone" aria-hidden="true"><use href="#i-mensagem"></use></svg>
+            Agendar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- ====================== 5. RODAPÉ ====================== -->
+  <!-- ====================== 7. RODAPÉ ====================== -->
   <footer class="rodape">
     <div class="container rodape__grade">
       <div>
         <p class="marca">Barbearia Modelo</p>
-        <p class="rodape__endereco">Rua Exemplo, 123, Centro, Teresina-PI</p>
+        <!-- TROCAR: endereço -->
+        <p>Rua Exemplo, 123, Centro, Teresina-PI</p>
       </div>
-
-      <nav class="rodape__links" aria-label="Redes sociais e contato">
-        <!-- TROQUE AQUI: link do Instagram do cliente, ex.: https://www.instagram.com/nomedoperfil/ -->
-        <a href="https://www.instagram.com/" target="_blank" rel="noopener">
-          <svg class="icone" aria-hidden="true"><use href="#icone-instagram"></use></svg>
-          Instagram
-        </a>
-
-        <!-- TROQUE AQUI: WhatsApp (2 de 3): o número do link e o número escrito -->
+      <nav class="rodape__links" aria-label="Contato e redes sociais">
+        <!-- TROCAR: número do WhatsApp (link e número escrito) -->
         <a href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
-          <svg class="icone" role="img" aria-label="WhatsApp"><use href="#icone-whatsapp"></use></svg>
+          <svg class="icone" aria-hidden="true"><use href="#i-mensagem"></use></svg>
           (86) 99999-9999
         </a>
+        <!-- TROCAR: link do Instagram -->
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+          <svg class="icone" aria-hidden="true"><use href="#i-camera"></use></svg>
+          Instagram
+        </a>
       </nav>
-
-      <!-- Para um cliente real, apague a parte "Site de demonstração..." -->
-      <p class="rodape__aviso">© 2026 Barbearia Modelo. Site de demonstração: esta barbearia é fictícia.</p>
+      <!-- Para um cliente real, apague a frase "Site de demonstração..." -->
+      <p class="rodape__aviso">© 2026 Barbearia Modelo. Site de demonstração: esta barbearia é fictícia e as fotos são de banco de imagens.</p>
     </div>
-
-    <!--
-      BOTÃO FLUTUANTE DO WHATSAPP
-      No código ele fica aqui dentro do rodapé, mas o CSS (position: fixed)
-      deixa ele parado no canto da tela o tempo todo.
-      TROQUE AQUI: WhatsApp (3 de 3)
-    -->
-    <a class="whatsapp-flutuante" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp">
-      <svg class="icone" aria-hidden="true"><use href="#icone-whatsapp"></use></svg>
-    </a>
   </footer>
 
+  <!-- Botão fixo do WhatsApp no celular (TROCAR: número) -->
+  <div class="barra-whats" id="barra-whats">
+    <a class="botao" href="https://wa.me/5586999999999?text=Ol%C3%A1%21%20Quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
+      <svg class="icone" aria-hidden="true"><use href="#i-mensagem"></use></svg>
+      Agendar pelo WhatsApp
+    </a>
+  </div>
+
+  <!-- GSAP + plugins (gratuitos, inclusive o DrawSVG) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+
   <!--
-    JAVASCRIPT
-    Faz três coisas pequenas. Nenhuma é obrigatória: sem JavaScript
-    o site continua funcionando, só sem esses detalhes.
-    Não precisa mexer aqui.
+    JAVASCRIPT (não precisa mexer)
+    Sem ele o site funciona igual: só perde as animações,
+    o "Aberto agora" e o esconde-mostra da barra do WhatsApp.
   -->
   <script>
-    document.documentElement.classList.add("js");
-
-    /* 1. FOTOS QUE FALTAM: mostra o quadro cinza no lugar da foto */
+    /* 1. FOTO QUE NÃO CARREGA: mostra um quadro no lugar */
     document.querySelectorAll(".foto img").forEach(function (img) {
       function semFoto() { img.parentElement.classList.add("sem-foto"); }
       if (img.complete && img.naturalWidth === 0) semFoto();
       img.addEventListener("error", semFoto);
     });
 
-    /* 2. SEÇÕES QUE SOBEM AO APARECER NA TELA */
+    /* 2. BARRA DO WHATSAPP NO CELULAR: some só quando outro botão de agendar está na tela */
     (function () {
-      var secoes = document.querySelectorAll(".revela");
-      if (!("IntersectionObserver" in window)) {
-        secoes.forEach(function (s) { s.classList.add("visivel"); });
-        return;
-      }
-      var observador = new IntersectionObserver(function (entradas) {
+      var barra = document.getElementById("barra-whats");
+      var ctas = document.querySelectorAll("[data-cta]");
+      if (!barra || !("IntersectionObserver" in window)) return;
+      var visiveis = new Set();
+      barra.classList.add("recolhida");
+      var obs = new IntersectionObserver(function (entradas) {
         entradas.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add("visivel");
-            observador.unobserve(e.target);
-          }
+          if (e.isIntersecting) visiveis.add(e.target); else visiveis.delete(e.target);
         });
-      }, { rootMargin: "0px 0px -10% 0px" });
-      secoes.forEach(function (s) { observador.observe(s); });
+        barra.classList.toggle("recolhida", visiveis.size > 0);
+      });
+      ctas.forEach(function (c) { obs.observe(c); });
     })();
 
-    /*
-      3. "ABERTO AGORA / FECHADO AGORA" no topo
-      Lê os horários da lista da seção "Onde fica" e compara com a hora
-      de Teresina. Para mudar horários, edite a lista lá em cima.
-    */
+    /* 3. "ABERTO AGORA / FECHADO" a partir da lista de horários, no fuso de Teresina */
     (function () {
       var lista = document.getElementById("horarios");
       var status = document.getElementById("status");
       if (!lista || !status || !window.Intl) return;
 
       var nomesDias = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
-
-      // "9" vira 9, "8:30" vira 8.5
-      function paraHoras(texto) {
-        var partes = String(texto).split(":");
-        return Number(partes[0]) + Number(partes[1] || 0) / 60;
+      function paraHoras(t) { var p = String(t).split(":"); return Number(p[0]) + Number(p[1] || 0) / 60; }
+      function escreverHora(h) {
+        var hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+        return hh + "h" + (mm ? String(mm).padStart(2, "0") : "");
       }
 
-      // 9 vira "9h", 8.5 vira "8h30"
-      function escreverHora(horas) {
-        var h = Math.floor(horas);
-        var m = Math.round((horas - h) * 60);
-        return h + "h" + (m ? String(m).padStart(2, "0") : "");
-      }
-
-      // Monta a semana: para cada dia (0 a 6), o horário ou null se fechado
       var semana = [null, null, null, null, null, null, null];
       var linhaDoDia = [];
       lista.querySelectorAll("li[data-dias]").forEach(function (li) {
@@ -1168,45 +1138,90 @@
         });
       });
 
-      // Dia da semana e hora agora, no fuso de Teresina (mesmo para quem abre o site de outro estado)
       var agora = {};
       new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Fortaleza",
-        weekday: "short",
-        hour: "numeric",
-        minute: "numeric",
-        hourCycle: "h23"
+        timeZone: "America/Fortaleza", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23"
       }).formatToParts(new Date()).forEach(function (p) { agora[p.type] = p.value; });
-
       var hoje = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(agora.weekday);
-      var horaAgora = Number(agora.hour) + Number(agora.minute) / 60;
+      var hora = Number(agora.hour) + Number(agora.minute) / 60;
       if (hoje < 0) return;
-
       if (linhaDoDia[hoje]) linhaDoDia[hoje].classList.add("hoje");
 
-      var texto = "";
-      var turnoHoje = semana[hoje];
-      if (turnoHoje && horaAgora >= turnoHoje.abre && horaAgora < turnoHoje.fecha) {
-        status.setAttribute("data-estado", "aberto");
-        texto = "Aberto até as " + escreverHora(turnoHoje.fecha);
-      } else if (turnoHoje && horaAgora < turnoHoje.abre) {
-        texto = "Fechado, abre hoje às " + escreverHora(turnoHoje.abre);
+      var turno = semana[hoje], html = "";
+      if (turno && hora >= turno.abre && hora < turno.fecha) {
+        html = "<strong>Aberto agora</strong>, até as " + escreverHora(turno.fecha);
+      } else if (turno && hora < turno.abre) {
+        html = "Fechado agora. <strong>Abre hoje às " + escreverHora(turno.abre) + "</strong>";
       } else {
         for (var i = 1; i <= 7; i++) {
           var dia = (hoje + i) % 7;
           if (semana[dia]) {
-            texto = "Fechado, abre " + (i === 1 ? "amanhã" : nomesDias[dia]) + " às " + escreverHora(semana[dia].abre);
+            html = "Fechado agora. <strong>Abre " + (i === 1 ? "amanhã" : nomesDias[dia]) + " às " + escreverHora(semana[dia].abre) + "</strong>";
             break;
           }
         }
       }
-
-      if (texto) {
-        status.textContent = texto;
+      if (html) {
+        status.querySelector("span").innerHTML = html;
         status.hidden = false;
       }
     })();
-  </script>
 
+    /* 4. ANIMAÇÕES (GSAP). Só transform e opacity, de 0,4s a 0,9s.
+          Com "reduzir movimento" ligado, nada anima e tudo aparece pronto. */
+    (function () {
+      var raiz = document.documentElement;
+      if (!window.gsap || !window.ScrollTrigger || !window.DrawSVGPlugin) { raiz.classList.remove("anima"); return; }
+      gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+      // Tira o "esconde" antes de criar as animações (mesmo ciclo, sem piscar)
+      raiz.classList.remove("anima");
+
+      var mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", function () {
+        var curva = "power3.out";
+
+        // Topo: foto assenta e o texto sobe em sequência
+        gsap.from(".abertura__foto img", { scale: 1.08, duration: 0.9, ease: "power2.out" });
+        gsap.from("[data-entra='foto']", { opacity: 0, duration: 0.6, ease: "power1.out" });
+        gsap.from(".abertura [data-entra]:not(.foto)", { opacity: 0, y: 32, duration: 0.8, ease: curva, stagger: 0.08, delay: 0.15 });
+        // Foto do topo desce devagar ao rolar (profundidade)
+        gsap.to(".abertura__foto img", { yPercent: 8, ease: "none", scrollTrigger: { trigger: ".abertura", start: "top top", end: "bottom top", scrub: true } });
+
+        // Blocos que sobem ao aparecer
+        gsap.utils.toArray("[data-revela]").forEach(function (el) {
+          gsap.from(el, { opacity: 0, y: 24, duration: 0.7, ease: curva, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+        });
+
+        // Galeria: mosaico entra em cascata + leve profundidade em cada foto
+        gsap.from(".mosaico figure", {
+          opacity: 0, y: 48, duration: 0.8, ease: curva,
+          stagger: { each: 0.08, grid: "auto", from: "start" },
+          scrollTrigger: { trigger: ".mosaico", start: "top 80%", once: true }
+        });
+        gsap.utils.toArray(".mosaico figure").forEach(function (fig) {
+          gsap.fromTo(fig.querySelector("img"), { yPercent: -5 }, { yPercent: 5, ease: "none", scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true } });
+        });
+
+        // Assinatura: a tesoura se desenha, dá um corte e percorre a linha tracejada
+        var corte = document.querySelector(".corte");
+        var tesoura = corte.querySelector(".tesoura");
+        var a = tesoura.querySelector(".tesoura__a");
+        var b = tesoura.querySelector(".tesoura__b");
+        var percurso = function () { return -(corte.offsetWidth - tesoura.getBoundingClientRect().width); };
+        var tl = gsap.timeline({ scrollTrigger: { trigger: corte, start: "top 75%", once: true } });
+        tl.from(tesoura.querySelectorAll("path, circle:not(.tesoura__eixo)"), { drawSVG: 0, duration: 0.9, ease: "power1.inOut", stagger: 0.04 })
+          .from(tesoura.querySelector(".tesoura__eixo"), { opacity: 0, scale: 0, transformOrigin: "50% 50%", duration: 0.4, ease: "back.out(2)" }, "-=0.3")
+          .addLabel("corta")
+          .from(tesoura, { x: percurso, duration: 0.9, ease: "power1.inOut" }, "corta")
+          .from(".corte__tapa, .corte__metade", { scaleX: 0, duration: 0.9, ease: "power1.inOut" }, "corta")
+          .fromTo(".corte__metade--cima", { y: 0 }, { y: -4, immediateRender: false, duration: 0.5, ease: "power2.out" }, "corta")
+          .fromTo(".corte__metade--baixo", { y: 0 }, { y: 4, immediateRender: false, duration: 0.5, ease: "power2.out" }, "corta")
+          .to(a, { rotation: -12, svgOrigin: "100 60", duration: 0.11, repeat: 7, yoyo: true, ease: "sine.inOut" }, "corta")
+          .to(b, { rotation: 12, svgOrigin: "100 60", duration: 0.11, repeat: 7, yoyo: true, ease: "sine.inOut" }, "corta");
+      });
+
+      window.addEventListener("load", function () { ScrollTrigger.refresh(); });
+    })();
+  </script>
 </body>
 </html>

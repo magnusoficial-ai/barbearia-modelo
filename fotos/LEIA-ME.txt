@@ -1,7 +1,14 @@
-Coloque aqui as fotos da barbearia, com estes nomes:
+Coloque aqui as fotos da barbearia do cliente.
 
-  atendimento.jpg  foto vertical do barbeiro atendendo (de preferência 1200 x 1500 pixels)
-  ambiente.jpg     foto horizontal do salão (de preferência 1600 x 900 pixels)
+Hoje a página usa placeholders do Unsplash. No index.html, procure
+"TROCAR POR FOTO DO CLIENTE" e troque cada link pelo arquivo desta pasta,
+por exemplo: src="fotos/atendimento.jpg"
 
-Enquanto as fotos não estiverem aqui, o site mostra um quadro cinza no lugar de cada uma.
+  Topo         foto do barbeiro atendendo, de preferência horizontal (1600 x 1067)
+  Galeria (5)  fotos de cortes feitos na barbearia: degradê, barba, tesoura,
+               ferramentas e a cadeira (de 800 a 1200 pixels de largura)
+
+Ajuste também o alt="..." de cada foto (lido para pessoas cegas e usado pelo Google)
+e a legenda embaixo de cada foto da galeria.
+
 Use fotos da própria barbearia: elas passam mais confiança do que fotos de banco de imagens.
