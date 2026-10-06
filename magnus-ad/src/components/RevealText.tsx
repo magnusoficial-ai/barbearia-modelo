@@ -66,6 +66,3 @@ export const RevealText: React.FC<Props> = ({
     </div>
   );
 };
-
-/** Quantas palavras um texto tem (para encadear animações depois dele). */
-export const wordCount = (text: string) => text.split(/\s+/).filter(Boolean).length;

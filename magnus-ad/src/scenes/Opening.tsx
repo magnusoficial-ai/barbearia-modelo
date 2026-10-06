@@ -2,9 +2,8 @@ import {getLength} from '@remotion/paths';
 import {MessageCircle} from 'lucide-react';
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
-import {M_CENTERLINE} from '../brand/Logo';
+import {M_CENTERLINE, Wordmark} from '../brand/Logo';
 import {M_SYMBOL} from '../brand/logo-paths';
-import {Wordmark} from '../brand/Logo';
 import {polyline, Trace, type Pt} from '../components/Circuit';
 import {RevealText} from '../components/RevealText';
 import {Stage} from '../components/Atmosphere';
@@ -377,5 +376,3 @@ export const Opening: React.FC<{short?: boolean}> = ({short = false}) => {
     </Stage>
   );
 };
-
-export const OPENING_FRAMES = {full: FULL.end, short: SHORT.end};
