@@ -1,0 +1,33 @@
+{
+  "name": "magnus-ad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vídeo publicitário da MAGNUS em Remotion (vertical, horizontal e corte de 15s).",
+  "scripts": {
+    "dev": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "stills": "node scripts/render-stills.mjs",
+    "render:vertical": "remotion render MagnusAd-Vertical out/magnus-ad-vertical.mp4",
+    "render:horizontal": "remotion render MagnusAd-Horizontal out/magnus-ad-horizontal.mp4",
+    "render:15s": "remotion render MagnusAd-15s out/magnus-ad-15s.mp4",
+    "render": "npm run render:vertical && npm run render:horizontal && npm run render:15s"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.533",
+    "@remotion/cli": "4.0.533",
+    "@remotion/google-fonts": "4.0.533",
+    "@remotion/noise": "4.0.533",
+    "@remotion/paths": "4.0.533",
+    "@remotion/renderer": "4.0.533",
+    "@remotion/transitions": "4.0.533",
+    "lucide-react": "1.52.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.533"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "7.0.2"
+  }
+}

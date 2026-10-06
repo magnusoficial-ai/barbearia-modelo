@@ -33,3 +33,7 @@ Todas usam só transform e opacity, duram de 0,4s a 0,9s e ficam desligadas para
 ## Ver no computador
 
 Abra `index.html` no navegador. Para publicar, envie `index.html` e a pasta `fotos/`.
+
+## Outros projetos neste repositório
+
+- `magnus-ad/`: comercial da MAGNUS em Remotion (vídeos vertical, horizontal e de 15s). Veja `magnus-ad/README.md`.

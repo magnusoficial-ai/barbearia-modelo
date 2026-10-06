@@ -1,0 +1,5 @@
+node_modules
+.remotion
+out/test
+# frames de revisão em PNG ficam fora do git; vão em JPG (out/stills/*.jpg)
+out/stills/**/*.png

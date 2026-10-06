@@ -1,0 +1,9 @@
+Coloque aqui a trilha do comercial (por exemplo: trilha.mp3).
+
+O vídeo foi montado sobre uma grade de 120 BPM: cada tempo dura 0,5s (15 frames)
+e cada compasso dura 2s. Os cortes caem nos segundos inteiros, que são os tempos
+1 e 3 do compasso. Use uma trilha de 120 BPM com o primeiro tempo forte no 0:00.
+
+Depois abra src/MagnusAd.tsx, procure "TRILHA" e descomente as duas linhas indicadas
+(o import no topo e o <Audio> no fim). O corte de 15s usa o mesmo arquivo e a mesma
+grade; a música é cortada no fim do vídeo.
